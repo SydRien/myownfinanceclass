@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // One small document per student: users/{uid} = { s: "<compact JSON>", t: <ms> }
+    match /users/{uid} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['s', 't'])
+        && request.resource.data.s is string
+        && request.resource.data.s.size() < 200000;   // ~195 KB cap per student
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Money Course Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday study tool: calm, clear, encouraging; matches the owner's earlier projects
+   IDEA a tidy hardware-style console of soft panels: each week a key that lights up green when done
+   PICTURE the 24-week path on Home, keys filling as lessons are completed, with a progress meter
+   COLOUR warm greige ground #e4e0d6, raised panels #faf8f3, ink #2c2a26, green #4a9a3f for done, orange #c47a3a for due; night #111111
+   TYPE IBM Plex Sans throughout, IBM Plex Mono for numbers
+   LAYOUT top nav; Home = Today panel, then the path, then this week + coming up; phone stacks */
+:root{color-scheme:light dark;--bg:light-dark(#e4e0d6,#111111);--ink:light-dark(#2c2a26,#f2f0eb);--mut:light-dark(#6a655c,#8f8f96);--line:light-dark(#cfc8bb,#2e2e34);--pan:light-dark(#efebe2,#1a1a1c);--sl:light-dark(#3f8a35,#7dcf6e);--red:light-dark(#b8692c,#e89a5b);--ok:light-dark(#3f8a35,#7dcf6e);--card:light-dark(#faf8f3,#222226);--lnk:light-dark(#2a6fbd,#5aaeff);--on:light-dark(#ffffff,#111111)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "IBM Plex Sans",system-ui,sans-serif;overflow-x:clip}
+a{color:var(--lnk)}
+h1,h2,h3{font-family:"IBM Plex Sans",system-ui,sans-serif;font-weight:600;letter-spacing:-.015em;line-height:1.1;margin:0 0 .4em;text-wrap:balance}
+h1{font-size:clamp(30px,4.2vw,46px)}
+h2{font-size:clamp(22px,2.6vw,28px)}
+h3{font-size:19px}
+p{margin:0 0 .8em}
+.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:18px;max-width:1240px;margin:0 auto;padding:0 max(16px,3vw)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--ink);text-decoration:none;flex:none;padding:12px 0}
+.brand i{width:12px;height:12px;border-radius:50%;background:var(--sl);box-shadow:0 0 0 4px color-mix(in srgb,var(--sl) 25%,transparent);display:block}
+nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav a{flex:none;text-decoration:none;color:var(--mut);font-weight:500;font-size:15px;padding:16px 10px;border-bottom:3px solid transparent}
+nav a.on{color:var(--ink);border-color:var(--sl)}
+nav a:hover{color:var(--ink)}
+main{max-width:1240px;margin:0 auto;padding:clamp(20px,3vw,40px) max(16px,3vw) 64px}
+.lead{color:var(--mut);font-size:17px;max-width:68ch}
+.g2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(15em,1fr));gap:16px}
+.pan{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 1px 0 var(--line)}
+.card{border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--card);box-shadow:0 1px 0 var(--line)}
+.muted{color:var(--mut)}
+.sm{font-size:14px}
+.tag{display:inline-block;font-size:13px;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--pan);color:var(--sl);white-space:nowrap}
+.tag.r{color:var(--red)}
+button,.btn{font:600 15px "IBM Plex Sans",sans-serif;min-height:44px;padding:0 18px;border-radius:10px;border:1px solid var(--sl);background:var(--sl);color:var(--on);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+button.ghost,.btn.ghost{background:transparent;color:var(--sl)}
+button:disabled{opacity:.5;cursor:default}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--lnk);outline-offset:2px}
+input,select,textarea{font:16px "IBM Plex Sans",sans-serif;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:44px;width:100%}
+textarea{min-height:96px;resize:vertical}
+label{display:block;font-size:14px;font-weight:600;margin-bottom:4px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px;margin-bottom:14px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;color:var(--mut);font-weight:600}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+/* path picture */
+.path{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin:22px 0 30px}
+.ph h4{margin:0 0 8px;min-height:2.6em;font:600 13px "IBM Plex Sans",sans-serif;color:var(--mut)}
+.cells{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.cell{aspect-ratio:1/1.05;border-radius:12px;border:1px solid var(--line);background:var(--card);box-shadow:inset 0 -3px 0 var(--pan);display:flex;flex-direction:column;justify-content:space-between;padding:8px;text-decoration:none;color:var(--ink);position:relative;overflow:hidden}
+.cell b{font-family:"IBM Plex Mono",monospace;font-size:20px;line-height:1}
+.cell span{font-size:12px;line-height:1.2;color:var(--mut)}
+.cell.part{background:repeating-linear-gradient(135deg,var(--pan) 0 6px,var(--card) 6px 12px)}
+.cell.done{background:var(--sl);border-color:var(--sl);color:var(--on);box-shadow:0 0 14px color-mix(in srgb,var(--sl) 40%,transparent)}
+.cell.done span{color:color-mix(in srgb,var(--on) 85%,transparent)}
+.cell.now{border:2px solid var(--red);box-shadow:0 0 0 3px color-mix(in srgb,var(--red) 22%,transparent)}
+.cell:hover{border-color:var(--sl)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));gap:12px;margin-bottom:22px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.stat b{display:block;font-family:"IBM Plex Mono",monospace;font-size:clamp(26px,3vw,34px);line-height:1.1}
+.ev{display:grid;grid-template-columns:5.6em minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.ev.c{grid-template-columns:30px minmax(0,1fr);align-items:center}
+.ev time{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.k-lec{background:var(--lnk)}.k-read{background:#a07d2a}.k-lab{background:var(--ink)}.k-quiz{background:var(--red)}.k-jr{background:#8f8a80}
+.checks label{display:flex;gap:10px;align-items:center;font-weight:500;font-size:16px;padding:8px 0;cursor:pointer}
+.checks input{width:22px;height:22px;min-height:0;accent-color:var(--sl)}
+ul.links{padding:0;list-style:none;margin:0}
+ul.links li{padding:8px 0;border-bottom:1px solid var(--line)}
+.notes li{margin-bottom:6px}
+/* calendar */
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.cal div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:92px;padding:6px;font-size:13px}
+.cal .hd{min-height:0;font-weight:600;color:var(--mut);background:var(--pan)}
+.cal{background:var(--card);border-radius:12px;overflow:hidden}
+.cal .o{opacity:.4}
+.cal .t{box-shadow:inset 0 0 0 2px var(--red)}
+.cal button.day{all:unset;cursor:pointer;display:block;font-weight:600;margin-bottom:4px}
+.cal .e{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5}
+/* quiz + flash */
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1.5px solid var(--line);margin:8px 0;font-weight:500;padding:10px 14px;height:auto}
+.opt.right{border-color:var(--sl);background:color-mix(in srgb,var(--sl) 14%,var(--card))}
+.opt.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 10%,var(--card))}
+.flash{min-height:240px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:"IBM Plex Sans",sans-serif;font-size:clamp(22px,3vw,30px);cursor:pointer;padding:28px;border-radius:12px;background:var(--pan);border:0;color:var(--ink);width:100%;height:auto;font-weight:600}
+.flash.back{font:17px/1.5 "IBM Plex Sans",sans-serif;background:var(--card);border:2px solid var(--sl)}
+/* sims */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.tabs button{background:transparent;color:var(--ink);border-color:var(--line)}
+.tabs button.on{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.fig{position:relative;min-height:320px}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+svg text{font:13px "IBM Plex Sans",sans-serif;fill:var(--mut);paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+.big{font-family:"IBM Plex Mono",monospace;font-size:clamp(30px,4vw,44px);line-height:1.05;font-weight:700}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px;margin:12px 0}
+/* chat */
+.chat{display:flex;flex-direction:column;gap:12px;min-height:320px;max-height:60vh;overflow-y:auto;padding:4px 2px 12px}
+.msg{max-width:78ch;padding:12px 16px;border-radius:12px;white-space:pre-wrap}
+.msg.u{align-self:flex-end;background:var(--sl);color:var(--on)}
+.msg.a{align-self:flex-start;background:var(--card);border:1px solid var(--line)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chips button{background:var(--card);color:var(--ink);border-color:var(--line);font-weight:500;font-size:14px}
+.note{border-left:3px solid var(--red);padding:8px 12px;background:var(--card);border-radius:0 8px 8px 0;font-size:14px}
+.hide{display:none!important}
+#toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+#toast.on{opacity:1}
+@media(prefers-reduced-motion:reduce){#toast{transition:none}}
+@media(max-width:900px){.g2{grid-template-columns:minmax(0,1fr)}.path{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.bar{flex-wrap:wrap;gap:0}.brand{padding:10px 0 2px}nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;overflow:visible}nav a{padding:9px 2px;font-size:13px;text-align:center;border-bottom-width:2px}html{scroll-padding-top:130px}.path{grid-template-columns:repeat(2,minmax(0,1fr))}.cal div{min-height:58px;padding:3px}.cal .e{display:none}.cal .dots{display:block}table{font-size:13px}th,td{padding:6px 4px}}
+.cal .dots{display:none}
+.start{margin:18px 0}.start ol{padding-left:1.2em;margin:0 0 14px}.start li{margin-bottom:6px}
+.k-cls{background:#5a9bb8}
+.pbar{height:10px;border-radius:99px;background:color-mix(in srgb,var(--line) 70%,transparent);overflow:hidden;margin:4px 0}
+.pbar i{display:block;height:100%;background:var(--sl);border-radius:99px}
+.ph .pbar{height:6px;margin:0 0 8px}
+.today{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin:18px 0 6px;box-shadow:0 1px 0 var(--line)}
+.ev .ck{width:22px;height:22px;min-height:0;accent-color:var(--sl);cursor:pointer}
+.tick{display:inline-flex;width:22px;height:22px;border:2px solid var(--line);border-radius:6px;align-items:center;justify-content:center;font-size:14px;color:var(--on);font-weight:700}
+.tick.on{background:var(--sl);border-color:var(--sl)}
+.strike{text-decoration:line-through;opacity:.6}
+.donelist{list-style:none;padding:0;margin:0}.donelist li{padding:4px 0;color:var(--sl);font-weight:500}
+.mini{position:absolute;left:0;bottom:0;height:4px;width:var(--p);background:var(--red)}
+.cell.done .mini{display:none}
+@media(max-width:900px){.today{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header class="top"><div class="bar">
+<a class="brand" href="#home"><i></i><span>Money Course</span></a>
+<nav id="nav">
+<a href="#home">Home</a><a href="#syllabus">Syllabus</a><a href="#calendar">Calendar</a><a href="#quizzes">Quizzes</a><a href="#sims">Simulators</a><a href="#dictionary">Dictionary</a><a href="#teacher">AI teacher</a><a href="#journal">Journal</a>
+</nav></div></header>
+<main id="app"><h1>Loading your course</h1></main>
+<div id="toast" role="status"></div>
+<script src="firebase-config.js"></script>
+<script>
+{
+/* ---------- course content (static: lives in the page, never in the database) ---------- */
+const PH=["Money foundations","How markets work","Building your portfolio","Behavior and history","Valuing companies","Advanced and lifelong"];
+const CHK=["You know your net worth, savings rate and debt list, and your emergency fund is funded or funding.","You can explain a bond's yield, an index fund, and why a 1% fee matters.","A signed investment policy statement and an automated core portfolio.","A written plan for a 30% market drop, made before it happens.","A written thesis, a valuation spreadsheet and a position sized by your rules.","Final review done, IPS updated, yearly review date set."];
+const U={
+yale:["Yale: Financial Markets (Coursera, Shiller)","https://www.coursera.org/learn/financial-markets-global"],
+oyc:["Open Yale ECON 252 lecture videos","https://oyc.yale.edu/node/666"],
+mit:["MIT 15.401 lecture videos and notes","https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/resources"],
+mich:["Michigan: Finance for Everyone","https://online.umich.edu/courses/finance-for-everyone-smart-tools-for-decision-making/"],
+khan:["Khan Academy: Financial Literacy","https://www.khanacademy.org/college-careers-more/financial-literacy"],
+dam:["Damodaran: Valuation online class (NYU)","http://people.stern.nyu.edu/adamodar/New_Home_Page/webcastvalonline.htm"],
+inv:["Investor.gov: Introduction to investing","https://www.investor.gov/introduction-investing"],
+road:["Investor.gov: Roadmap to saving and investing","https://www.investor.gov/roadmap"],
+calc:["Investor.gov calculators","https://investor.gov/calculators"],
+acr:["AnnualCreditReport.com","https://www.annualcreditreport.com"],
+fred:["FRED economic data","https://fred.stlouisfed.org"],
+td:["TreasuryDirect","https://www.treasurydirect.gov"],
+finra:["FINRA tools: Fund Analyzer and more","https://www.finra.org/investors/tools"],
+pv:["Portfolio Visualizer","https://www.portfoliovisualizer.com"],
+irs:["IRS: 2026 contribution limits","https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500"],
+edgar:["SEC EDGAR company filings","https://www.sec.gov/edgar/search/"],
+bc:["FINRA BrokerCheck","https://brokercheck.finra.org"],
+cfa:["CFA Institute Investment Foundations","https://www.cfainstitute.org/programs/investment-foundations-certificate"]
+};
+const BH=(p,l)=>["Bogleheads wiki: "+l,"https://www.bogleheads.org/wiki/"+p];
+const BK=t=>[t+" (book)",null];
+const W=[
+{t:"Your money picture",l:[BK("The Psychology of Money, ch. 1–5"),U.khan],n:["Net worth = everything you own minus everything you owe. Track it monthly; the trend matters more than the number.","Cash flow = income minus spending. You can't plan money you haven't measured, so log before you budget.","Savings rate = what you save ÷ what you earn. It drives long-run wealth more than investment skill does early on."],lab:"Build a net-worth sheet (assets, debts) and start a 3-month spending log by category.",m:"None yet."},
+{t:"Budgeting, debt and credit",l:[U.khan,U.road,U.acr],n:["APR is the yearly borrowing cost; APY includes compounding. Credit cards commonly charge 20%+ APR.","Avalanche = pay the highest rate first (least interest). Snowball = smallest balance first (quick wins). Try both in the Debt simulator.","Credit score drivers: on-time payments, low utilization (under about 30% of limits), account age, mix, few new inquiries."],lab:"Pull your three free credit reports. List every debt with balance, APR and minimum. Run avalanche vs snowball in Simulators.",m:"Set every bill to automatic minimum payment."},
+{t:"Time value of money",l:[U.mich,U.mit],n:["Future value: FV = PV × (1 + r)^n. Money grows on its growth.","Present value runs it backwards: $1 in the future is worth less today. The rate you discount by is your opportunity cost.","Rule of 72: years to double ≈ 72 ÷ rate. Real return ≈ nominal return − inflation."],lab:"In the Compound simulator: what does $300/month become in 10, 20 and 30 years at 4%, 7% and 10%? Record the results in your journal.",m:"None."},
+{t:"Safety net: emergency fund and insurance",l:[U.road,U.khan],n:["Emergency fund: 3–6 months of essential expenses, more if income is irregular.","Keep it safe and liquid: an FDIC-insured high-yield savings account or a money market fund, not stocks.","Insurance moves catastrophic risk off your balance sheet: health, disability, renters or home, auto liability, term life if others depend on you."],lab:"Total your essential monthly expenses and set your emergency-fund target. Review your current insurance.",m:"Open a high-yield savings account and automate deposits to it."},
+{t:"What financial markets do",l:[U.yale,U.oyc],n:["Markets connect savers with borrowers and let people share and price risk.","Primary market: companies and governments raise new money. Secondary market: investors trade existing securities.","Shiller's theme: finance is risk management. Diversification, hedging and insurance are the three tools."],lab:"Write one page: who borrows, who lends and who carries risk when you put $1,000 in a savings account vs an index fund.",m:"None."},
+{t:"Cash, interest rates and bonds",l:[U.yale,U.fred,U.td],n:["A bond is a loan: you get interest (coupon) and your principal back at maturity.","Bond prices move opposite to interest rates. Duration estimates sensitivity: duration 6 means about a 6% price drop if rates rise 1 point.","Treasury bills are short-term US government debt; their interest is exempt from state income tax."],lab:"On FRED, chart the 3-month T-bill rate against CPI inflation since 2000. When was the real yield negative?",m:"Optional: buy one T-bill on TreasuryDirect."},
+{t:"Stocks and indices",l:[BK("A Random Walk Down Wall Street, part 1"),U.inv],n:["A share is part-ownership of a company and a claim on its future profits.","Total return = price change + dividends. Leaving out dividends badly understates long-run returns.","The S&P 500 tracks about 500 large US companies weighted by market value. US stocks have returned roughly 10% a year over the long run, with deep drops along the way."],lab:"Compare price return vs total return of the S&P 500 over 20 years using any free data source. Note the gap.",m:"None."},
+{t:"Funds, ETFs and costs",l:[BK("The Little Book of Common Sense Investing"),U.finra],n:["Mutual funds trade once a day at closing value; ETFs trade all day like stocks and are usually more tax-efficient.","An index fund copies an index instead of picking stocks, so costs stay low.","Expense ratio = yearly fee as a % of your money. Over decades a 1% fee can cost a quarter or more of your ending balance."],lab:"Use FINRA Fund Analyzer or the Fee simulator: $10,000 for 30 years at 0.03% vs 1.00%.",m:"Open a brokerage account. Decide your tuition-capital amount (≤5% of investable savings)."},
+{t:"Risk, return and diversification",l:[U.mit,BK("A Random Walk Down Wall Street, part 3")],n:["Volatility (standard deviation) measures how widely returns swing; drawdown measures the fall from a peak.","Diversification removes company-specific risk but not market risk. You are paid for bearing market risk.","Low correlation between assets is what makes a mix smoother than its parts."],lab:"In the Portfolio simulator, compare 100/0, 60/40 and 20/80. Note the median outcome and the 10th-percentile outcome.",m:"None."},
+{t:"Asset allocation",l:[BK("The Bogleheads' Guide to Investing, allocation chapters"),U.pv],n:["Your stock/bond mix drives most of how a portfolio behaves.","Risk tolerance is how a drop feels; risk capacity is whether your life can absorb it. Use the lower of the two.","Rebalance by calendar (yearly) or by bands (e.g. when off target by 5 points)."],lab:"Backtest three allocations on Portfolio Visualizer. Record each one's worst drawdown and recovery time.",m:"None."},
+{t:"Accounts and taxes",l:[BH("Prioritizing_investments","Prioritizing investments"),BH("Tax-efficient_fund_placement","Tax-efficient fund placement"),U.irs],n:["Order: employer match → high-interest debt → HSA (if eligible) → IRA → more 401(k) → taxable.","Roth: pay tax now, qualified withdrawals tax-free. Traditional: deduct now, pay tax later. 2026 limits: 401(k) $24,500, IRA $7,500.","Hold investments over a year for lower long-term capital-gains rates. Put tax-inefficient assets in tax-advantaged accounts."],lab:"Rank your available accounts in order and estimate how much goes into each this year. Check the IRS page for 2027 limits.",m:"Make sure you capture any employer 401(k) match."},
+{t:"Your investment policy statement",l:[BH("Investment_policy_statement","Investment policy statement")],n:["An IPS is rules you write while calm, to follow when markets are not.","It covers goals, time horizon, target allocation, contribution plan, rebalancing rule and what you will never do.","Automation is the strongest rule: scheduled buys remove the urge to time the market."],lab:"Write and sign your IPS in the Journal. Ask the AI teacher to critique it.",m:"First core purchase: a broad index fund. Set an automatic monthly buy."},
+{t:"Mr. Market and margin of safety",l:[BK("The Intelligent Investor, ch. 1, 8 and 20")],n:["Investing = thorough analysis, safety of principal and an adequate return. Anything else is speculation (Graham).","Mr. Market quotes prices daily. They are offers you may take or ignore, not verdicts on value.","Margin of safety = paying well below your estimate of value, to protect against your own errors."],lab:"Write how you would have acted in March 2020 with your current portfolio, then what your IPS says to do.",m:"Keep automatic buys running."},
+{t:"Behavioral biases",l:[U.yale,BK("The Psychology of Money, ch. 6–20")],n:["Loss aversion: losses feel about twice as painful as equal gains.","Overconfidence, herding, recency, anchoring and confirmation bias all push toward trading too much.","Defenses: written rules, checklists, a journal, automation and waiting periods."],lab:"Audit your journal so far. Tag every entry where a bias showed up.",m:"None."},
+{t:"Bubbles and crashes",l:[U.oyc,BK("A Random Walk Down Wall Street, part 2")],n:["Dot-com: the Nasdaq fell roughly 78% from 2000 to 2002.","2008: the S&P 500 fell roughly 57% peak to trough; 2020: about 34% in five weeks, recovered within months.","2022: stocks and bonds fell together as rates rose, a reminder that bonds are not always a hedge. (Figures approximate.)"],lab:"For each crash, note what fell, how far and how long recovery took. What would a 60/40 investor have felt?",m:"None."},
+{t:"How trading works",l:[U.inv],n:["Market order: fills now at whatever price. Limit order: fills only at your price or better, maybe never.","Stop order: becomes a market order once a trigger price is hit; in fast markets it can fill far below the stop.","Bid-ask spread is a hidden cost. US stock trades settle in one business day (T+1)."],lab:"Place market and limit orders in the Paper Trading simulator. Start a trade journal entry for each.",m:"Paper trading only."},
+{t:"Reading financial statements",l:[U.cfa,U.edgar],n:["Income statement: revenue down to net income over a period.","Balance sheet: assets = liabilities + equity at one date.","Cash flow statement: operating, investing and financing cash. Cash is harder to fake than earnings."],lab:"Pull one company's latest 10-K from EDGAR. Write down revenue, net income, operating cash flow, capex, cash and debt.",m:"None."},
+{t:"Ratios and business quality",l:[U.dam],n:["Margins (gross, operating, net) show pricing power and efficiency.","Return on equity shows profit per dollar of owner capital; check it isn't propped up by debt.","Free cash flow = operating cash flow − capital spending. Compare ratios only within an industry."],lab:"Compare three companies in one industry on margins, ROE, debt/equity and free cash flow.",m:"Paper-trade one of them."},
+{t:"Valuation: multiples and DCF",l:[U.dam],n:["P/E = price ÷ earnings per share. A high P/E bets on growth.","DCF value = future free cash flows discounted to today + a terminal value.","Value is very sensitive to the discount rate and growth guess. Damodaran: every valuation is a story told with numbers."],lab:"Value your company in the DCF simulator. Note how much value comes from the terminal value.",m:"None."},
+{t:"Writing a stock thesis",l:[BK("The Intelligent Investor, ch. 14–15")],n:["A thesis states the business, its advantage (moat), your value estimate and the price you would pay.","Write the sell triggers before buying: what evidence would prove you wrong?","Size each position so a total loss is survivable."],lab:"Write a one-page thesis in the Journal using the pre-trade checklist.",m:"First explore-sleeve buy (max 10% of lab capital), only after 2+ weeks of paper trading it."},
+{t:"Options, leverage, crypto and alternatives",l:[U.yale,U.inv],n:["A call is the right to buy at a strike price; a put is the right to sell. Buyers can lose the whole premium.","Leverage magnifies losses: after a 50% loss you need a 100% gain to break even.","Crypto assets have no cash flows and very high volatility; treat any holding as speculation."],lab:"Paper-model a covered call and a protective put. Model a 2x leveraged position through a 25% drop.",m:"Paper only."},
+{t:"Advisors, fees and fraud",l:[U.bc,U.inv],n:["A fiduciary must act in your best interest; a salesperson must only sell suitable products.","A 1% yearly advisory fee compounds like any other cost. Ask exactly how every adviser is paid.","Fraud red flags: guaranteed high returns, pressure to act now, unregistered sellers, secret strategies."],lab:"Look up one adviser on BrokerCheck. Spot the red flags in three sample pitches (ask the AI teacher for some).",m:"None."},
+{t:"Measuring and maintaining performance",l:[BH("Rebalancing","Rebalancing"),BH("Tax_loss_harvesting","Tax-loss harvesting")],n:["XIRR gives your true return when money went in at different times.","Compare against the benchmark you chose in your IPS, after fees.","Tax-loss harvesting: sell at a loss to offset gains; the wash-sale rule blocks it if you rebuy a substantially identical holding within 30 days."],lab:"Compute your XIRR in a spreadsheet and log it on the scorecard. Rebalance if your rule says so.",m:"Rebalance if your IPS rule triggers."},
+{t:"Final review and next 5 years",l:[U.cfa],n:["Reread your journal: which rules did you keep, and which did you break?","Update your IPS for the next five years and set one yearly review date.","Optional proof of learning: the CFA Investment Foundations certificate."],lab:"Take all six quizzes again. Write your updated IPS.",m:"Decide, from your results, whether to grow, keep or shrink the explore sleeve."}
+];
+const QZ=[
+[["At 6% a year, about how long does money take to double?",["6 years","12 years","18 years","72 years"],1,"Rule of 72: 72 ÷ 6 ≈ 12."],["Net worth equals…",["Income minus spending","Assets minus liabilities","Savings plus investments","Salary times years worked"],1,"What you own minus what you owe."],["Under the avalanche method you first pay off the debt with the…",["Smallest balance","Highest interest rate","Lowest minimum","Oldest date"],1,"Highest rate first minimizes total interest."],["A common emergency-fund target is…",["One week of pay","3–6 months of essential expenses","One year of salary in stocks","Whatever is left at month end"],1,"3–6 months of essentials, kept safe and liquid."],["$1,000 at 10% compounded yearly for 2 years becomes…",["$1,200","$1,210","$1,100","$1,020"],1,"1,000 × 1.1 × 1.1 = 1,210."]],
+[["When interest rates rise, prices of existing bonds usually…",["Rise","Fall","Stay fixed","Double"],1,"New bonds pay more, so old ones must get cheaper."],["Total return includes…",["Only price change","Price change plus dividends or interest","Only dividends","Fees"],1,"Income counts."],["A 1% expense ratio on $100,000 costs about…",["$10 a year","$100 a year","$1,000 a year","$10,000 a year"],2,"1% of 100,000."],["An index fund aims to…",["Beat the market","Match an index's return at low cost","Avoid all losses","Time the market"],1,"It copies the index."],["A Treasury bill is…",["A stock","Short-term US government debt","A corporate loan","A savings account"],1,"Maturities of a year or less."]],
+[["Diversification mainly removes…",["Market risk","Company-specific risk","Inflation","Taxes"],1,"Market risk remains."],["Rebalancing means…",["Selling everything in a crash","Returning to your target mix","Buying the best performer","Changing goals yearly"],1,"Sell what grew, buy what lagged."],["With an employer match you should usually…",["Ignore it","Contribute at least enough to get the full match","Only invest in company stock","Wait until age 40"],1,"It's an instant return."],["Roth IRA contributions are…",["Tax-deductible now","Made after tax; qualified withdrawals tax-free","Taxed twice","Limited to bonds"],1,"Pay tax now, not later."],["The main purpose of an IPS is…",["To predict markets","To write rules while calm and follow them later","To pick hot stocks","To avoid all risk"],1,"Rules before emotions."]],
+[["Graham's Mr. Market offers prices that are…",["Always correct","Offers you can take or ignore","Set by the government","Guaranteed"],1,"Use him, don't obey him."],["Margin of safety means…",["Holding cash only","Buying well below your estimate of value","Using stop-losses","Buying insurance"],1,"Room for error."],["Loss aversion means…",["Losses feel worse than equal gains","Avoiding all stocks","Losing money on purpose","Selling winners early is smart"],0,"About twice as painful."],["A limit order…",["Always fills immediately","Fills only at your price or better","Has no price","Is only for bonds"],1,"Price certainty, fill uncertainty."],["After a 50% loss, what gain gets you back to even?",["50%","75%","100%","150%"],2,"Half needs to double."]],
+[["The balance-sheet identity is…",["Revenue = Profit","Assets = Liabilities + Equity","Cash = Income","Debt = Equity"],1,"It always balances."],["Free cash flow is…",["Revenue minus taxes","Operating cash flow minus capital spending","Net income plus debt","Dividends paid"],1,"Cash left for owners."],["A P/E of 20 means…",["Price is 20× yearly earnings per share","20% return","20 years to profit","$20 share price"],0,"Price ÷ EPS."],["Raising the discount rate in a DCF makes value…",["Higher","Lower","Unchanged","Negative always"],1,"Future cash is worth less."],["A 10-K is…",["A tax form","A company's annual report filed with the SEC","A broker statement","A bond rating"],1,"Find it on EDGAR."]],
+[["A call option gives the buyer…",["The obligation to sell","The right to buy at the strike price","A dividend","A bond coupon"],1,"Right, not obligation."],["Which is a fraud red flag?",["Registered adviser","Guaranteed high returns","Low fees","Written disclosures"],1,"No real investment guarantees high returns."],["XIRR measures…",["Fees paid","Return accounting for the timing of deposits","Tax owed","Volatility"],1,"Money-weighted return."],["The wash-sale rule blocks a tax loss if you rebuy within…",["7 days","30 days","1 year","5 years"],1,"30 days before or after."],["A fiduciary adviser must…",["Sell only funds","Act in your best interest","Guarantee returns","Work for free"],1,"Best interest standard."]]
+];
+const DIC=[
+["APR","Yearly cost of borrowing, without compounding.","Money"],["APY","Yearly yield including compounding.","Money"],["Net worth","Assets minus liabilities.","Money"],["Savings rate","Share of income you save.","Money"],["Emergency fund","Cash for 3–6 months of essential expenses.","Money"],["Credit utilization","Card balances as a share of credit limits.","Money"],["Compounding","Earning returns on past returns.","Math"],["Present value","Today's worth of future money, after discounting.","Math"],["Discount rate","The return you require; used to bring future cash to today.","Math"],["Rule of 72","Years to double ≈ 72 ÷ annual rate.","Math"],["Real return","Return after inflation.","Math"],["Inflation","General rise in prices; erodes buying power.","Math"],["401(k)","Employer retirement plan with tax benefits.","Accounts"],["Employer match","Money your employer adds when you contribute.","Accounts"],["Roth IRA","After-tax retirement account; qualified withdrawals tax-free.","Accounts"],["Traditional IRA","Possibly deductible contributions; taxed on withdrawal.","Accounts"],["HSA","Health savings account; tax-free in, growth and qualified spending.","Accounts"],["Capital gain","Profit from selling above your cost.","Accounts"],["Long-term gain","Gain on assets held over one year; lower US tax rate.","Accounts"],["Wash-sale rule","Disallows a loss if you rebuy within 30 days.","Accounts"],["Stock","Ownership share in a company.","Assets"],["Bond","A loan to a government or company paying interest.","Assets"],["Coupon","A bond's interest payment.","Assets"],["Yield","Income as a percentage of price.","Assets"],["Duration","Bond price sensitivity to interest-rate changes.","Assets"],["T-bill","Short-term US Treasury debt.","Assets"],["REIT","Company owning real estate, traded like a stock.","Assets"],["Dividend","Cash a company pays its shareholders.","Assets"],["ETF","Fund that trades all day on an exchange.","Funds"],["Mutual fund","Pooled fund priced once a day.","Funds"],["Index fund","Fund that tracks an index at low cost.","Funds"],["Expense ratio","Annual fund fee as a % of assets.","Funds"],["Total return","Price change plus income.","Funds"],["Target-date fund","Fund that shifts from stocks to bonds as a year approaches.","Funds"],["Volatility","How widely returns swing (standard deviation).","Risk"],["Drawdown","Fall from a peak to a trough.","Risk"],["Diversification","Spreading money to reduce company-specific risk.","Risk"],["Correlation","How two assets move together, from −1 to +1.","Risk"],["Beta","Sensitivity of a stock to the overall market.","Risk"],["Asset allocation","Your mix of stocks, bonds and cash.","Risk"],["Rebalancing","Returning a portfolio to its target mix.","Risk"],["Dollar-cost averaging","Investing fixed amounts on a schedule.","Risk"],["IPS","Investment policy statement: your written rules.","Risk"],["Income statement","Revenue, costs and profit over a period.","Companies"],["Balance sheet","Assets, liabilities and equity at a date.","Companies"],["Cash flow statement","Cash from operations, investing and financing.","Companies"],["Free cash flow","Operating cash flow minus capital spending.","Companies"],["P/E ratio","Share price divided by earnings per share.","Companies"],["ROE","Net income divided by shareholders' equity.","Companies"],["DCF","Valuation by discounting future cash flows.","Companies"],["Intrinsic value","Your estimate of what a business is worth.","Companies"],["Margin of safety","Gap between value and the price you pay.","Companies"],["10-K","Annual report filed with the SEC.","Companies"],["Market order","Buy or sell now at the current price.","Markets"],["Limit order","Buy or sell only at your price or better.","Markets"],["Stop order","Becomes a market order at a trigger price.","Markets"],["Bid-ask spread","Gap between buying and selling prices.","Markets"],["Efficient market","Idea that prices reflect available information.","Markets"],["Bull / bear market","Rising / falling market, often ±20%.","Markets"],["Call option","Right to buy at a set price before expiry.","Markets"],["Put option","Right to sell at a set price before expiry.","Markets"],["Leverage","Using borrowed money; magnifies gains and losses.","Markets"],["Loss aversion","Losses hurt more than equal gains please.","Behavior"],["Recency bias","Overweighting what just happened.","Behavior"],["Herding","Following the crowd.","Behavior"],["Mr. Market","Graham's moody partner who quotes prices daily.","Behavior"],["Fiduciary","Adviser legally bound to act in your interest.","Behavior"]
+];
+const TOOLS=[["Google Sheets / Excel","Budget, net worth, FV, PMT, NPV, XIRR","https://sheets.google.com",1],["Investor.gov calculators","Compound interest, savings goals","https://investor.gov/calculators",3],["AnnualCreditReport.com","Free credit reports","https://www.annualcreditreport.com",2],["TreasuryDirect","Buy T-bills and I bonds","https://www.treasurydirect.gov",6],["FRED","Rates, inflation, economic data","https://fred.stlouisfed.org",6],["FINRA tools","Fund Analyzer: compare fund fees","https://www.finra.org/investors/tools",8],["Morningstar","Fund and stock research","https://www.morningstar.com",9],["Portfolio Visualizer","Backtest allocations","https://www.portfoliovisualizer.com",10],["Bogleheads wiki","Accounts, funds, tax placement","https://www.bogleheads.org/wiki/Main_Page",11],["IRS.gov","Official limits and tax rules","https://www.irs.gov",11],["SEC EDGAR","Company 10-K and 10-Q filings","https://www.sec.gov/edgar/search/",17],["Damodaran Online","Valuation data and lectures","https://pages.stern.nyu.edu/~adamodar/",18],["FINRA BrokerCheck","Check advisers and brokers","https://brokercheck.finra.org",22]];
+
+/* ---------- state: compact, one document per student ---------- */
+const DEF={v:1,s:"2026-11-23",w:"0".repeat(24),q:[],j:[],r:[],c:[],p:null};
+let S=JSON.parse(JSON.stringify(DEF));
+let store={mode:"local",save:async()=>{},label:"This browser only"};
+let lastSaved="",saveT=null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=x=>(x<0?"−$":"$")+Math.round(Math.abs(x)).toLocaleString("en-US");
+const kmoney=x=>{const a=Math.abs(x);return (x<0?"−$":"$")+(a>=1e6?(a/1e6).toFixed(a>=1e7?0:1)+"M":a>=1e3?Math.round(a/1e3)+"k":Math.round(a))};
+const toast=t=>{const e=$("#toast");e.textContent=t;e.classList.add("on");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("on"),1800)};
+function persist(){clearTimeout(saveT);saveT=setTimeout(async()=>{const js=JSON.stringify(S);if(js===lastSaved)return;try{await store.save(js);lastSaved=js}catch(e){toast("Couldn't save: "+(e.message||e.code||"error"))}try{localStorage.setItem("mc_state",js)}catch(e){}},1500)}
+function adopt(js){if(!js)return;try{const o=JSON.parse(js);S=Object.assign(JSON.parse(JSON.stringify(DEF)),o);lastSaved=js;route()}catch(e){}}
+try{adopt(localStorage.getItem("mc_state"))}catch(e){}
+
+async function initStorage(){
+  const cfg=window.FIREBASE_CONFIG;
+  if(cfg&&cfg.apiKey){
+    try{
+      const b="https://www.gstatic.com/firebasejs/10.12.2/";
+      const [A,Au,F]=await Promise.all([import(b+"firebase-app.js"),import(b+"firebase-auth.js"),import(b+"firebase-firestore.js")]);
+      const app=A.initializeApp(cfg),auth=Au.getAuth(app),fs=F.getFirestore(app);
+      store={mode:"firestore",label:"Not signed in",auth,Au,save:async()=>{}};
+      Au.onAuthStateChanged(auth,async u=>{
+        if(!u){store.label="Not signed in";store.save=async()=>{};store.user=null;route();return}
+        const ref=F.doc(fs,"users",u.uid);store.user=u;store.label="Firestore · "+(u.email||"signed in");
+        store.save=js=>F.setDoc(ref,{s:js,t:Date.now()});
+        const snap=await F.getDoc(ref);if(snap.exists())adopt(snap.data().s);else{persist()}route();
+      });
+      store.signIn=()=>Au.signInWithPopup(auth,new Au.GoogleAuthProvider());
+      store.signOut=()=>Au.signOut(auth);
+      store.ask=async(system,messages)=>{const t=await auth.currentUser.getIdToken();const r=await fetch("/api/teacher",{method:"POST",headers:{"content-type":"application/json",authorization:"Bearer "+t},body:JSON.stringify({system,messages})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Teacher unavailable");return j.text};
+      route();return;
+    }catch(e){console.error(e)}
+  }
+  if(window.claude&&claude.use){
+    try{
+      const [db,us,sm]=await Promise.all([claude.use("db"),claude.use("user"),claude.use("sample")]);
+      if(sm)store.sample=sm;
+      const id=db&&us?await us.id():null;
+      if(db&&id){
+        const ref=db.collection("data/users/"+id).doc("s");
+        store.mode="artifact";store.label="Saved to your account (private)";
+        store.save=js=>ref.set({s:js,t:Date.now()});
+        const snap=await ref.get();if(snap.exists)adopt(snap.data().s);
+      }
+      if(sm)store.ask=async(system,messages)=>(await sm([{role:"user",content:system+"\n\n---\nConversation so far follows."},{role:"assistant",content:"Understood. I'm ready to teach."},...messages],{modelTier:"default",cache:false})).text;
+      route();
+    }catch(e){console.error(e)}
+  }
+}
+
+/* ---------- dates ---------- */
+const D=s=>{const[a,b,c]=s.split("-").map(Number);return new Date(a,b-1,c)};
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const addD=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const fmtD=d=>d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
+const today=()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth(),t.getDate())};
+const curWeek=()=>{const n=Math.floor((today()-D(S.s))/864e5/7);return Math.max(0,Math.min(23,n))};
+function events(){const st=D(S.s),out=[];W.forEach((w,i)=>{const m=addD(st,i*7);
+ out.push([addD(m,0),"lec","Lecture: "+w.t,i],[addD(m,2),"read","Reading: week "+(i+1),i],[addD(m,3),"cls","Class session with AI teacher",i],[addD(m,4),"lab","Lab due: "+w.t,i],[addD(m,6),"jr","Journal entry",i]);
+ if(i%4===3)out.push([addD(m,6),"quiz","Quiz: "+PH[i>>2],i])});return out.sort((a,b)=>a[0]-b[0])}
+
+/* ---------- progress ---------- */
+const wbits=i=>parseInt(S.w[i],16)||0;
+const setBit=(i,b,on)=>{let v=wbits(i);v=on?v|b:v&~b;S.w=S.w.slice(0,i)+v.toString(16)+S.w.slice(i+1);persist()};
+const stamped=i=>(wbits(i)&7)===7;
+const doneN=()=>W.filter((_,i)=>stamped(i)).length;
+const KB={lec:1,read:2,lab:4,cls:8};
+const isDone=(k,i)=>KB[k]?!!(wbits(i)&KB[k]):k==="jr"?S.j.some(e=>e[1]===i+1):k==="quiz"?S.q.some(x=>x[0]===(i>>2)):false;
+const ITEMS=[["lec","Lecture"],["read","Reading"],["cls","Class session"],["lab","Lab"],["jr","Journal entry"]];
+const wItems=i=>ITEMS.concat(i%4===3?[["quiz","Phase "+((i>>2)+1)+" quiz"]]:[]);
+const wPct=i=>{const it=wItems(i);return it.filter(([k])=>isDone(k,i)).length/it.length};
+const allPct=()=>{let d=0,n=0;W.forEach((_,i)=>wItems(i).forEach(([k])=>{n++;if(isDone(k,i))d++}));return[d,n]};
+const phPct=p=>[0,1,2,3].reduce((a,k)=>a+wPct(p*4+k),0)/4;
+const ck=(k,i)=>KB[k]?`<input type="checkbox" class="ck" data-wk="${i}" data-bit="${KB[k]}" ${isDone(k,i)?"checked":""} aria-label="mark done">`:`<span class="tick ${isDone(k,i)?"on":""}" aria-label="${isDone(k,i)?"done":"not done"}">${isDone(k,i)?"✓":""}</span>`;
+const go=(k,i)=>k==="quiz"?"#quizzes":k==="jr"?"#journal":"#week-"+(i+1);
+const bar=(f,t)=>`<div class="pbar" role="progressbar" aria-valuenow="${Math.round(f*100)}" aria-valuemin="0" aria-valuemax="100" title="${t||""}"><i style="width:${Math.round(f*100)}%"></i></div>`;
+const qBest=p=>{const r=S.q.filter(x=>x[0]===p);return r.length?Math.max(...r.map(x=>x[1])):null};
+
+/* ---------- views ---------- */
+const V={};
+V.home=()=>{const cw=curWeek(),w=W[cw],st=D(S.s),pre=today()<st,ev=events(),tk=iso(today());
+ const up=ev.filter(e=>e[0]>today()).slice(0,6);
+ const tod=ev.filter(e=>iso(e[0])===tk),late=ev.filter(e=>e[0]<today()&&!isDone(e[1],e[3])).slice(-6),fin=ev.filter(e=>e[0]<=today()&&e[3]===cw&&isDone(e[1],e[3]));
+ const [ad,an]=allPct();
+ const line=e=>`<div class="ev c"><time>${ck(e[1],e[3])}</time><a href="${go(e[1],e[3])}" class="${isDone(e[1],e[3])?"strike":""}" style="color:inherit"><span class="dot k-${e[1]}"></span>${esc(e[2])}</a></div>`;
+ const qs=PH.map((_,p)=>qBest(p)).filter(x=>x!==null);
+ return `<h1>${pre?"Your course starts "+fmtD(st):"Week "+(cw+1)+" of 24: "+esc(w.t)}</h1>
+ <p class="lead">${pre?"Get ready: read the first five chapters of The Psychology of Money and set your start date below.":"Phase "+((cw>>2)+1)+", "+PH[cw>>2]+". Finish the lecture, reading and lab to stamp this week."}</p>
+ ${ad===0?`<section class="card start"><h2>Start here</h2><ol><li><b>Pick your start date</b> in Settings at the bottom of this page (the calendar follows it).</li><li><b>Open week 1</b> and work through the lecture notes, reading and lab.</li><li><b>Tick each item</b> as you finish it. Ticks show up here, in the calendar and on your progress bar.</li><li><b>Stuck?</b> Ask the AI teacher, or look a word up in the Dictionary.</li></ol><a class="btn" href="#week-1">Open week 1</a></section>`:""}
+ <section class="today"><div><h2>Today, ${fmtD(today())}</h2>${tod.length?tod.map(line).join(""):`<p class="muted">${pre?"Nothing due yet. Your first lecture is "+fmtD(st)+".":"Nothing scheduled today. Catch up or review flashcards."}</p>`}${late.length?`<h3 style="margin-top:18px;color:var(--red)">Catch up (${late.length})</h3>${late.map(e=>line(e).replace("<time>","<time title='"+fmtD(e[0])+"'>")).join("")}`:""}</div>
+ <div><h2>Course progress</h2><div class="big">${Math.round(ad/an*100)}%</div>${bar(ad/an)}<p class="muted sm" style="margin-top:8px">${ad} of ${an} items done · ${doneN()}/24 weeks stamped</p><h3 style="margin-top:16px">Finished this week</h3>${fin.length?`<ul class="donelist">${fin.map(e=>`<li>✓ ${esc(e[2])}</li>`).join("")}</ul>`:"<p class='muted sm'>Nothing yet this week.</p>"}</div></section>
+ <div class="path">${PH.map((ph,p)=>`<div class="ph"><h4>Phase ${p+1} · ${Math.round(phPct(p)*100)}%<br><span style="font-weight:500">${ph}</span></h4>${bar(phPct(p))}<div class="cells">${[0,1,2,3].map(k=>{const i=p*4+k,b=wbits(i);return `<a class="cell ${stamped(i)?"done":b?"part":""} ${i===cw&&!pre?"now":""}" href="#week-${i+1}" aria-label="Week ${i+1}: ${esc(W[i].t)}"><b>${i+1}${stamped(i)?" ✓":""}</b><span>${esc(W[i].t)}</span><em class="mini" style="--p:${Math.round(wPct(i)*100)}%"></em></a>`}).join("")}</div></div>`).join("")}</div>
+ <div class="stats"><div class="stat"><b>${qs.length}/6</b><span class="muted sm">phase quizzes taken</span></div><div class="stat"><b>${qs.length?Math.round(qs.reduce((a,b)=>a+b,0)/qs.length*20)+"%":"–"}</b><span class="muted sm">quiz average (best tries)</span></div><div class="stat"><b>${S.j.length}</b><span class="muted sm">journal entries</span></div><div class="stat"><b>${S.r.length}</b><span class="muted sm">real-money lab entries</span></div></div>
+ <div class="g2"><section class="pan"><h2>This week</h2><h3>${esc(w.t)}</h3><ul class="notes">${w.n.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p><b>Lab:</b> ${esc(w.lab)}</p><p><b>Real-money step:</b> ${esc(w.m)}</p><div class="row"><a class="btn" href="#week-${cw+1}">Open week ${cw+1}</a><a class="btn ghost" href="#teacher">Ask the teacher</a></div></section>
+ <section><h2>Coming up</h2>${up.map(e=>`<div class="ev"><time>${fmtD(e[0]).replace(",","")}</time><a href="#week-${e[3]+1}" style="color:inherit;text-decoration:none"><span class="dot k-${e[1]}"></span>${esc(e[2])}</a></div>`).join("")||"<p class='muted'>Course complete. Set a new start date to go again.</p>"}<p class="sm" style="margin-top:12px"><a href="#calendar">Full calendar</a></p></section></div>
+ <section class="card" style="margin-top:28px"><h2>Settings and storage</h2><div class="fields"><div><label for="sd">Course start date (a Monday)</label><input type="date" id="sd" value="${S.s}"></div><div><label>Where your progress is saved</label><div style="padding:10px 0">${esc(store.label)}</div></div><div><label>Your data size</label><div style="padding:10px 0">${(JSON.stringify(S).length/1024).toFixed(1)} KB of a 195 KB cap</div></div></div>
+ <div class="row">${store.mode==="firestore"?(store.user?`<button class="ghost" id="so">Sign out</button>`:`<button id="si">Sign in with Google to sync</button>`):""}<button class="ghost" id="ex">Copy my data (backup)</button><button class="ghost" id="rs">Reset all progress</button></div>
+ <p class="sm muted" style="margin-top:12px">All lectures, quizzes and the dictionary are built into the site, so the database only stores your progress, one small document per student. Even 5,000 students would use well under 1 GB.</p></section>`};
+V.syllabus=()=>`<h1>Syllabus</h1><p class="lead">24 weeks in six phases, about 4–6 hours a week. Each phase ends with a checkpoint. Real money enters in small steps; every step is paper-traded first.</p>
+ ${PH.map((ph,p)=>`<section style="margin:28px 0"><h2>Phase ${p+1}: ${ph}</h2><div class="scroll"><table><thead><tr><th>Week</th><th>Topic</th><th>Lab</th><th>Real-money step</th><th>Status</th></tr></thead><tbody>${[0,1,2,3].map(k=>{const i=p*4+k,b=wbits(i);return `<tr><td class="n">${i+1}</td><td><a href="#week-${i+1}">${esc(W[i].t)}</a></td><td class="sm">${esc(W[i].lab)}</td><td class="sm">${esc(W[i].m)}</td><td><span class="tag ${stamped(i)?"":"r"}">${stamped(i)?"✓ Done":b?Math.round(wPct(i)*100)+"%":"Not started"}</span><div class="sm muted" style="margin-top:4px;white-space:nowrap">${wItems(i).map(([k,l])=>`<span title="${l}">${isDone(k,i)?"✓":"○"}</span>`).join(" ")}</div></td></tr>`}).join("")}</tbody></table></div><p class="note" style="margin-top:12px"><b>Checkpoint ${p+1}:</b> ${CHK[p]} <a href="#quizzes">Take the quiz</a></p></section>`).join("")}
+ <section class="card"><h2>Real-money lab rules</h2><ul><li>Size: an amount you could lose completely, about 5% or less of investable savings.</li><li>About 90% in a diversified index core; at most 10% in an explore sleeve for researched stocks.</li><li>Paper-trade every new technique for two weeks first. Write a thesis before every trade. Wait 72 hours.</li><li>Off-limits during the course: margin, leverage, shorting, buying options, penny stocks, social-media tips.</li><li>Monthly scorecard against a total-market or S&amp;P 500 index fund.</li></ul><p class="sm muted">This course teaches; it is not personal financial advice. Every money decision is yours.</p></section>`;
+V.week=i=>{const w=W[i],b=wbits(i),m=addD(D(S.s),i*7);return `<p class="sm"><a href="#syllabus">Syllabus</a> · Phase ${(i>>2)+1}: ${PH[i>>2]}</p><h1>Week ${i+1}: ${esc(w.t)}</h1><p class="lead">Week of ${fmtD(m)}. Lecture Monday, reading by Wednesday, class session Thursday, lab Friday, journal Sunday.</p>
+ <div class="g2"><div><section class="pan"><h2>Lecture notes</h2><ul class="notes">${w.n.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>
+ <section style="margin-top:22px"><h2>Watch and read</h2><ul class="links">${w.l.map(([t,u])=>`<li>${u?`<a href="${u}" target="_blank" rel="noopener">${esc(t)}</a>`:`<b>${esc(t)}</b>`}</li>`).join("")}</ul></section>
+ <section style="margin-top:22px"><h2>Lab</h2><p>${esc(w.lab)}</p><h3>Real-money step</h3><p>${esc(w.m)}</p></section></div>
+ <aside><section class="card checks"><h2>Week checklist</h2>${bar(wPct(i))}<p class="sm muted" style="margin:6px 0 4px">${Math.round(wPct(i)*100)}% complete</p>${wItems(i).map(([k,l])=>KB[k]?`<label>${ck(k,i)} ${l}</label>`:`<label><a href="${go(k,i)}" style="display:flex;gap:10px;align-items:center;color:inherit;text-decoration:none">${ck(k,i)} ${l} <span class="sm muted">${isDone(k,i)?"done":k==="jr"?"write one in Journal":"take it in Quizzes"}</span></a></label>`).join("")}<p class="sm muted">${stamped(i)?"Week stamped ✓":"Lecture, reading and lab stamp the week."}</p></section>
+ <section class="card" style="margin-top:16px"><h3>Practice</h3><div class="row"><a class="btn ghost" href="#teacher" id="askw">Ask the teacher about this week</a>${i%4===3?`<a class="btn ghost" href="#quizzes">Phase ${(i>>2)+1} quiz</a>`:""}</div></section>
+ <div class="row" style="margin-top:16px">${i>0?`<a class="btn ghost" href="#week-${i}">Week ${i}</a>`:""}${i<23?`<a class="btn ghost" href="#week-${i+2}">Week ${i+2}</a>`:""}</div></aside></div>`};
+let calM=null,calSel=null;
+V.calendar=()=>{if(!calM){const t=today()<D(S.s)?D(S.s):today();calM=new Date(t.getFullYear(),t.getMonth(),1)}
+ const ev=events(),first=calM,start=addD(first,-((first.getDay()+6)%7)),tk=iso(today());
+ const byDay={};ev.forEach(e=>(byDay[iso(e[0])]=byDay[iso(e[0])]||[]).push(e));
+ const days=[];for(let k=0;k<42;k++)days.push(addD(start,k));
+ const sel=calSel||tk,list=byDay[sel]||[];
+ return `<h1>Calendar</h1><p class="lead">Lectures, readings, class sessions, labs, journals and quizzes, laid out from your start date (${fmtD(D(S.s))}).</p>
+ <div class="row" style="justify-content:space-between;margin-bottom:12px"><h2 style="margin:0">${first.toLocaleDateString("en-US",{month:"long",year:"numeric"})}</h2><div class="row"><button class="ghost" id="cp">Previous</button><button class="ghost" id="ct">Today</button><button class="ghost" id="cn">Next</button></div></div>
+ <div class="row sm" style="margin-bottom:10px"><span><span class="dot k-lec"></span>Lecture</span><span><span class="dot k-cls"></span>Class session</span><span><span class="dot k-read"></span>Reading</span><span><span class="dot k-lab"></span>Lab</span><span><span class="dot k-jr"></span>Journal</span><span><span class="dot k-quiz"></span>Quiz</span></div>
+ <div class="cal">${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=>`<div class="hd">${d}</div>`).join("")}${days.map(d=>{const k=iso(d),es=byDay[k]||[];return `<div class="${d.getMonth()!==first.getMonth()?"o":""} ${k===tk?"t":""}"><button class="day" data-d="${k}">${d.getDate()}</button>${es.map(e=>`<span class="e ${isDone(e[1],e[3])?"strike":""}">${isDone(e[1],e[3])?"✓ ":`<span class="dot k-${e[1]}"></span>`}${esc(e[2])}</span>`).join("")}<span class="dots">${es.map(e=>`<span class="dot k-${e[1]}"></span>`).join("")}</span></div>`}).join("")}</div>
+ <section style="margin-top:22px"><h2>${fmtD(D(sel))}</h2>${list.length?list.map(e=>`<div class="ev c"><time>${ck(e[1],e[3])}</time><a href="${go(e[1],e[3])}" class="${isDone(e[1],e[3])?"strike":""}"><span class="dot k-${e[1]}"></span>${esc(e[2])}</a></div>`).join(""):"<p class='muted'>Nothing scheduled. Tap a day to see its items.</p>"}</section>`};
+let qz=null;
+V.quizzes=()=>{if(qz){const Q=QZ[qz.p][qz.i];if(qz.i>=QZ[qz.p].length)return "";
+ return `<p class="sm"><a href="#quizzes" id="qx">All quizzes</a></p><h1>Phase ${qz.p+1} quiz</h1><p class="muted">Question ${qz.i+1} of 5 · Score ${qz.sc}</p><section class="card" style="max-width:720px"><h2>${esc(Q[0])}</h2>${Q[1].map((o,k)=>`<button class="opt ${qz.a!=null?(k===Q[2]?"right":k===qz.a?"wrong":""):""}" data-o="${k}" ${qz.a!=null?"disabled":""}>${esc(o)}</button>`).join("")}${qz.a!=null?`<p class="note">${qz.a===Q[2]?"Correct. ":"Not quite. "}${esc(Q[3])}</p><button id="qn">${qz.i<4?"Next question":"See result"}</button>`:""}</section>`}
+ return `<h1>Quizzes</h1><p class="lead">One five-question quiz per phase, due on the Sunday that closes it. Retake as often as you like; your best score counts.</p><div class="g3">${PH.map((ph,p)=>{const b=qBest(p),n=S.q.filter(x=>x[0]===p).length;return `<section class="card"><h3>${b!==null?"✓ ":""}Phase ${p+1}: ${ph}</h3>${bar(b===null?0:b/5)}<p class="muted sm" style="margin-top:6px">${b===null?"Not taken yet":"Best "+b+"/5 · "+n+" attempt"+(n>1?"s":"")}</p><button data-qp="${p}">${b===null?"Start":"Retake"}</button></section>`}).join("")}</div>
+ <h2 style="margin-top:32px">Flashcards</h2><p class="muted">Every dictionary term, one at a time. Tap the card to flip it.</p><div id="fc"></div>`};
+let fcI=0,fcB=false;
+const fcHTML=()=>{const d=DIC[fcI];return `<div style="max-width:720px"><button class="flash ${fcB?"back":""}" id="fcard">${fcB?esc(d[1]):esc(d[0])}</button><div class="row" style="margin-top:12px"><button class="ghost" id="fp">Previous</button><button class="ghost" id="fr">Shuffle</button><button class="ghost" id="fnx">Next</button><span class="muted sm">${fcI+1} / ${DIC.length} · ${d[2]}</span></div></div>`};
+let simT="cmp";
+V.sims=()=>`<h1>Simulators</h1><p class="lead">Practice with numbers before money. Results use simplified assumptions and are for learning, not forecasts.</p>
+ <div class="tabs">${[["cmp","Compound and fees"],["debt","Debt payoff"],["mc","Portfolio outcomes"],["dcf","Stock valuation (DCF)"],["pt","Paper trading"]].map(([k,t])=>`<button class="${simT===k?"on":""}" data-sim="${k}">${t}</button>`).join("")}</div><div id="sim"></div>`;
+let dTab="terms",dQ="",dC="All";
+V.dictionary=()=>{const cats=["All",...new Set(DIC.map(d=>d[2]))];return `<h1>Dictionary and tools</h1><div class="tabs"><button class="${dTab==="terms"?"on":""}" data-dt="terms">Terms (${DIC.length})</button><button class="${dTab==="tools"?"on":""}" data-dt="tools">Tools and websites</button></div>
+ ${dTab==="terms"?`<div class="fields"><div><label for="dq">Search</label><input id="dq" value="${esc(dQ)}" placeholder="e.g. yield, Roth, P/E"></div><div><label for="dc">Category</label><select id="dc">${cats.map(c=>`<option ${c===dC?"selected":""}>${c}</option>`).join("")}</select></div></div><div class="scroll"><table><thead><tr><th>Term</th><th>Meaning</th><th>Category</th></tr></thead><tbody id="dt"></tbody></table></div>`
+ :`<div class="scroll"><table><thead><tr><th>Tool</th><th>What it's for</th><th class="n">First used</th></tr></thead><tbody>${TOOLS.map(t=>`<tr><td><a href="${t[2]}" target="_blank" rel="noopener">${t[0]}</a></td><td>${t[1]}</td><td class="n"><a href="#week-${t[3]}">Week ${t[3]}</a></td></tr>`).join("")}</tbody></table></div>`}`};
+const dRows=()=>{const q=dQ.toLowerCase();return DIC.filter(d=>(dC==="All"||d[2]===dC)&&(d[0]+" "+d[1]).toLowerCase().includes(q)).map(d=>`<tr><td><b>${esc(d[0])}</b></td><td>${esc(d[1])}</td><td class="sm muted">${d[2]}</td></tr>`).join("")||"<tr><td colspan=3 class='muted'>No match. Try asking the AI teacher.</td></tr>"};
+let chat=[],busy=false,preQ="";
+V.teacher=()=>`<h1>AI teacher</h1><p class="lead">Ask anything about the course. The teacher knows your current week and progress, explains with examples, and checks your understanding. It teaches; it won't tell you what to buy.</p>
+ ${store.ask?"":`<p class="note">${store.mode==="firestore"?"Sign in on Home to use the teacher.":"The teacher isn't available in this view."}</p>`}
+ <div class="chat" id="chat">${chat.length?chat.map(m=>`<div class="msg ${m.role==="user"?"u":"a"}">${esc(m.content)}</div>`).join(""):`<div class="msg a">Hi. You're on week ${curWeek()+1}: ${esc(W[curWeek()].t)}. Ask me a question, or pick one below.</div>`}${busy?`<div class="msg a">Thinking…</div>`:""}</div>
+ <div class="chips">${["Explain this week's main idea simply","Quiz me with 3 questions on this week","Critique my investment policy statement","Give me 3 sample fraud pitches to spot red flags","What's the difference between an ETF and a mutual fund?"].map(c=>`<button data-chip="${esc(c)}">${esc(c)}</button>`).join("")}</div>
+ <form id="tf" class="row"><input id="ti" placeholder="Type your question" style="flex:1 1 16em" value="${esc(preQ)}" ${store.ask?"":"disabled"}><button ${store.ask&&!busy?"":"disabled"}>Send</button><button type="button" class="ghost" id="tc">Clear</button></form><p class="sm muted" style="margin-top:8px">Chats aren't stored, which keeps your saved data small. Copy anything worth keeping into your Journal.</p>`;
+let jT="j";
+V.journal=()=>`<h1>Journal and real-money lab</h1><div class="tabs">${[["j","Journal"],["r","Real-money log"],["c","Monthly scorecard"]].map(([k,t])=>`<button class="${jT===k?"on":""}" data-jt="${k}">${t}</button>`).join("")}</div>
+ ${jT==="j"?`<form id="jf" class="card" style="margin-bottom:20px"><label for="jx">New entry (week ${curWeek()+1})</label><textarea id="jx" maxlength="2000" placeholder="What did you learn? One decision you'd make differently? Any money moved?"></textarea><div class="row" style="margin-top:10px"><button>Save entry</button><span class="sm muted">Up to 2,000 characters.</span></div></form>${S.j.slice().reverse().map((e,k)=>`<article class="ev"><time>${esc(e[0])}</time><div><span class="tag">Week ${e[1]}</span><p style="white-space:pre-wrap;margin-top:6px">${esc(e[2])}</p><button class="ghost" data-dj="${S.j.length-1-k}">Delete</button></div></article>`).join("")||"<p class='muted'>No entries yet.</p>"}`:""}
+ ${jT==="r"?`<form id="rf" class="card" style="margin-bottom:20px"><div class="fields"><div><label for="rd">Date</label><input type="date" id="rd" value="${iso(today())}"></div><div><label for="ra">Action</label><select id="ra"><option>Buy</option><option>Sell</option><option>Deposit</option><option>Rebalance</option></select></div><div><label for="rt">Ticker or fund</label><input id="rt" maxlength="12"></div><div><label for="rv">Amount ($)</label><input id="rv" type="number" step="0.01" min="0"></div><div><label for="rs2">Sleeve</label><select id="rs2"><option>Core</option><option>Explore</option></select></div></div><label for="rh">Thesis and sell trigger</label><textarea id="rh" maxlength="600"></textarea><div class="row" style="margin-top:10px"><button>Log it</button><span class="sm muted">Before saving, run the pre-trade checklist: fits IPS, can explain it, valued it, know when you're wrong, sized it, waited 72 hours.</span></div></form><div class="scroll"><table><thead><tr><th>Date</th><th>Action</th><th>Ticker</th><th class="n">Amount</th><th>Sleeve</th><th>Thesis</th><th></th></tr></thead><tbody>${S.r.map((r,k)=>`<tr><td class="n">${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td class="n">${money(r[3])}</td><td>${esc(r[4])}</td><td class="sm">${esc(r[5])}</td><td><button class="ghost" data-dr="${k}">Delete</button></td></tr>`).join("")||"<tr><td colspan=7 class='muted'>Nothing logged. Real money starts in week 4 (savings) and week 12 (first index fund).</td></tr>"}</tbody></table></div>`:""}
+ ${jT==="c"?`<form id="cf" class="card" style="margin-bottom:20px"><div class="fields"><div><label for="cm">Month</label><input type="month" id="cm" value="${iso(today()).slice(0,7)}"></div><div><label for="cw">Net worth ($)</label><input type="number" id="cw"></div><div><label for="cs">Savings rate (%)</label><input type="number" id="cs" step="0.1"></div><div><label for="cl">Lab capital value ($)</label><input type="number" id="cl"></div><div><label for="cr">Your return (%)</label><input type="number" id="cr" step="0.01"></div><div><label for="cb">Benchmark return (%)</label><input type="number" id="cb" step="0.01"></div><div><label for="cf2">Rules followed?</label><select id="cf2"><option>Yes</option><option>Mostly</option><option>No</option></select></div></div><button>Add month</button></form><div class="scroll"><table><thead><tr><th>Month</th><th class="n">Net worth</th><th class="n">Savings rate</th><th class="n">Lab capital</th><th class="n">Return</th><th class="n">Benchmark</th><th>Rules</th><th></th></tr></thead><tbody>${S.c.map((c,k)=>`<tr><td>${esc(c[0])}</td><td class="n">${money(c[1])}</td><td class="n">${c[2]}%</td><td class="n">${money(c[3])}</td><td class="n">${c[4]}%</td><td class="n">${c[5]}%</td><td>${esc(c[6])}</td><td><button class="ghost" data-dc="${k}">Delete</button></td></tr>`).join("")||"<tr><td colspan=8 class='muted'>Add your first month at the end of this month.</td></tr>"}</tbody></table></div>`:""}`;
+
+/* ---------- charts ---------- */
+function chart(el,series,opt={}){const draw=()=>{const Wd=el.clientWidth,H=el.clientHeight;if(!Wd)return;const L=Wd<520?52:70,R=16,T=16,B=30;
+ const all=series.flatMap(s=>s.band?[...s.lo,...s.hi]:s.y),n=Math.max(...series.map(s=>(s.y||s.lo).length));let mx=Math.max(...all),mn=Math.min(0,...all);if(mx===mn)mx=mn+1;
+ const X=i=>L+(Wd-L-R)*i/Math.max(1,n-1),Y=v=>T+(H-T-B)*(1-(v-mn)/(mx-mn));
+ const ticks=[0,.25,.5,.75,1].map(f=>mn+(mx-mn)*f);let h="";
+ ticks.forEach(v=>{h+=`<line x1="${L}" x2="${Wd-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${L-8}" y="${Y(v)+4}" text-anchor="end">${(opt.f||kmoney)(v)}</text>`});
+ const step=Math.max(1,Math.ceil((n-1)/(Wd<520?4:8)));for(let i=0;i<n;i+=step)h+=`<text x="${X(i)}" y="${H-8}" text-anchor="middle">${opt.xl?opt.xl(i):i}</text>`;
+ series.forEach(s=>{if(s.band){h+=`<path d="M${s.hi.map((v,i)=>X(i)+","+Y(v)).join("L")}L${s.lo.map((v,i)=>X(i)+","+Y(v)).reverse().join("L")}Z" fill="${s.c}" opacity=".18"/>`}else{h+=`<path d="M${s.y.map((v,i)=>X(i)+","+Y(v)).join("L")}" fill="none" stroke="${s.c}" stroke-width="${s.w||2.5}"/>`;if(s.lab)h+=`<text x="${Wd-R}" y="${Y(s.y[s.y.length-1])-8}" text-anchor="end" style="fill:${s.c};font-weight:600">${s.lab}</text>`}});
+ el.innerHTML=h};draw();const ro=new ResizeObserver(draw);ro.observe(el)}
+
+/* ---------- simulators ---------- */
+const num=id=>parseFloat(($("#"+id)||{}).value)||0;
+const SIM={};
+SIM.cmp={h:()=>`<div class="g2"><div><div class="fields"><div><label for="a0">Starting amount ($)</label><input id="a0" type="number" value="1000"></div><div><label for="a1">Monthly deposit ($)</label><input id="a1" type="number" value="300"></div><div><label for="a2">Annual return (%)</label><input id="a2" type="number" value="7" step="0.1"></div><div><label for="a3">Years</label><input id="a3" type="number" value="30"></div><div><label for="a4">Annual fee (%)</label><input id="a4" type="number" value="1" step="0.01"></div></div><div class="res" id="ar"></div></div><div class="fig"><svg id="ac"></svg></div></div>`,
+ run(){const P=num("a0"),M=num("a1"),r=num("a2")/100,y=Math.min(80,Math.max(1,Math.round(num("a3")))),f=num("a4")/100;const g=(rate)=>{let v=P,o=[v];for(let k=1;k<=y*12;k++){v=v*(1+rate/12)+M;if(k%12===0)o.push(v)}return o};
+ const a=g(r),b=g(r-f),dep=P+M*12*y;$("#ar").innerHTML=`<div><div class="big">${money(a[y])}</div><span class="muted sm">with no fee</span></div><div><div class="big" style="color:var(--red)">${money(b[y])}</div><span class="muted sm">with ${(f*100).toFixed(2)}% fee</span></div><div><div class="big">${money(a[y]-b[y])}</div><span class="muted sm">lost to fees (${a[y]?Math.round((a[y]-b[y])/a[y]*100):0}%)</span></div><div><div class="big">${money(dep)}</div><span class="muted sm">you deposited</span></div>`;
+ chart($("#ac"),[{y:a,c:"var(--sl)",lab:"No fee"},{y:b,c:"var(--red)",lab:"With fee"}],{xl:i=>"Y"+i})}};
+let debts=[["Credit card",4500,24.9,135],["Car loan",9000,7.5,220],["Store card",800,29.9,35]];
+SIM.debt={h:()=>`<div class="scroll"><table><thead><tr><th>Debt</th><th class="n">Balance ($)</th><th class="n">APR (%)</th><th class="n">Minimum ($)</th><th></th></tr></thead><tbody>${debts.map((d,k)=>`<tr>${d.map((v,j)=>`<td><input data-db="${k},${j}" value="${esc(v)}" ${j?'type="number" step="any"':""} aria-label="debt ${k+1} field ${j+1}"></td>`).join("")}<td><button class="ghost" data-dd="${k}">Remove</button></td></tr>`).join("")}</tbody></table></div><div class="row" style="margin:12px 0"><button class="ghost" id="da">Add debt</button><div style="width:14em"><label for="dx">Extra per month ($)</label><input id="dx" type="number" value="200"></div></div><div class="res" id="dr"></div><p class="sm muted">Sample debts shown; replace them with yours.</p>`,
+ run(){const ex=num("dx");const sim=order=>{let ds=debts.map(d=>({b:+d[1],r:+d[2]/1200,m:+d[3],n:d[0]})),mo=0,int=0,firstPaid=null;while(ds.some(d=>d.b>0.005)&&mo<600){mo++;let extra=ex;ds.forEach(d=>{if(d.b>0){const i=d.b*d.r;int+=i;d.b+=i}});ds.forEach(d=>{if(d.b>0){const p=Math.min(d.m,d.b);d.b-=p}else extra+=d.m});const tg=ds.filter(d=>d.b>0).sort(order);for(const d of tg){const p=Math.min(extra,d.b);d.b-=p;extra-=p;if(extra<=0)break}if(!firstPaid){const f=ds.find(d=>d.b<=0.005);if(f)firstPaid=[f.n,mo]}}return{mo,int,firstPaid}};
+ const av=sim((a,b)=>b.r-a.r),sn=sim((a,b)=>a.b-b.b);const cell=(t,s)=>`<div class="card"><h3>${t}</h3><div class="big">${s.mo>=600?"50+ yrs":Math.floor(s.mo/12)+"y "+s.mo%12+"m"}</div><p class="muted sm">to debt-free · ${money(s.int)} interest${s.firstPaid?" · first win: "+esc(s.firstPaid[0])+" in month "+s.firstPaid[1]:""}</p></div>`;
+ $("#dr").innerHTML=cell("Avalanche (highest rate first)",av)+cell("Snowball (smallest balance first)",sn)+`<div class="card"><h3>Difference</h3><div class="big">${money(sn.int-av.int)}</div><p class="muted sm">interest saved by avalanche</p></div>`}};
+function rng(seed){let s=seed%2147483647;if(s<=0)s+=2147483646;return()=>(s=s*16807%2147483647)/2147483647}
+function gauss(r){let u=0,v=0;while(!u)u=r();v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+SIM.mc={h:()=>`<div class="g2"><div><div class="fields"><div><label for="m0">Stocks (%)</label><input id="m0" type="range" min="0" max="100" step="5" value="60"><span id="m0v" class="sm"></span></div><div><label for="m1">Starting amount ($)</label><input id="m1" type="number" value="10000"></div><div><label for="m2">Monthly deposit ($)</label><input id="m2" type="number" value="300"></div><div><label for="m3">Years</label><input id="m3" type="number" value="20"></div></div><div class="res" id="mr"></div><p class="sm muted">1,000 simulated paths. Assumes stocks average about 9.5% a year with 16% volatility, bonds 4.5% with 6%, nominal and before fees: rough historical figures, not a forecast.</p></div><div class="fig"><svg id="mcv"></svg></div></div>`,
+ run(){const w=num("m0")/100,P=num("m1"),M=num("m2"),y=Math.min(50,Math.max(1,Math.round(num("m3"))));$("#m0v").textContent=Math.round(w*100)+"% stocks / "+Math.round(100-w*100)+"% bonds";
+ const r=rng(42),N=1000,paths=[];let lossYr=0;for(let p=0;p<N;p++){let v=P,o=[v];for(let k=1;k<=y;k++){const zs=gauss(r),zb=.1*zs+Math.sqrt(.99)*gauss(r);const ret=w*(.095+.16*zs)+(1-w)*(.045+.06*zb);if(ret<0)lossYr++;v=Math.max(0,v*(1+ret)+M*12);o.push(v)}paths.push(o)}
+ const pc=q=>[...Array(y+1)].map((_,k)=>{const a=paths.map(p=>p[k]).sort((a,b)=>a-b);return a[Math.floor(q*(N-1))]});const lo=pc(.1),md=pc(.5),hi=pc(.9),dep=P+M*12*y;
+ $("#mr").innerHTML=`<div><div class="big">${money(md[y])}</div><span class="muted sm">median after ${y} years</span></div><div><div class="big">${money(lo[y])}</div><span class="muted sm">bad case (10th percentile)</span></div><div><div class="big">${money(hi[y])}</div><span class="muted sm">good case (90th)</span></div><div><div class="big">${Math.round(lossYr/(N*y)*100)}%</div><span class="muted sm">of years were negative · deposited ${money(dep)}</span></div>`;
+ chart($("#mcv"),[{band:1,lo,hi,c:"var(--sl)"},{y:md,c:"var(--sl)",lab:"Median"},{y:lo,c:"var(--red)",w:1.5,lab:"10th pct"}],{xl:i=>"Y"+i})}};
+SIM.dcf={h:()=>`<div class="g2"><div><div class="fields"><div><label for="v0">Free cash flow now ($M)</label><input id="v0" type="number" value="500"></div><div><label for="v1">Growth, years 1–5 (%)</label><input id="v1" type="number" value="8" step="0.5"></div><div><label for="v2">Terminal growth (%)</label><input id="v2" type="number" value="2.5" step="0.1"></div><div><label for="v3">Discount rate (%)</label><input id="v3" type="number" value="9" step="0.25"></div><div><label for="v4">Net debt ($M)</label><input id="v4" type="number" value="1000"></div><div><label for="v5">Shares (M)</label><input id="v5" type="number" value="100"></div><div><label for="v6">Share price now ($)</label><input id="v6" type="number" value="95"></div></div><p class="sm muted">Sample company. Use figures from a real 10-K in week 19.</p></div><div><div class="res" id="vr"></div><div class="scroll"><table id="vt"></table></div></div></div>`,
+ run(){const val=(g,d)=>{const F=num("v0"),tg=num("v2")/100,nd=num("v4"),sh=num("v5")||1;let pv=0,f=F;for(let t=1;t<=5;t++){f*=1+g;pv+=f/(1+d)**t}if(d<=tg)return{ps:NaN,tvs:NaN};const tv=f*(1+tg)/(d-tg),tvp=tv/(1+d)**5;return{ps:(pv+tvp-nd)/sh,tvs:tvp/(pv+tvp)}};
+ const g=num("v1")/100,d=num("v3")/100,pr=num("v6"),b=val(g,d),mos=pr&&isFinite(b.ps)?(b.ps-pr)/b.ps:NaN;
+ $("#vr").innerHTML=`<div><div class="big">${isFinite(b.ps)?"$"+b.ps.toFixed(2):"–"}</div><span class="muted sm">estimated value per share</span></div><div><div class="big" style="color:${mos>0?"var(--sl)":"var(--red)"}">${isFinite(mos)?Math.round(mos*100)+"%":"–"}</div><span class="muted sm">margin of safety vs $${pr}</span></div><div><div class="big">${isFinite(b.tvs)?Math.round(b.tvs*100)+"%":"–"}</div><span class="muted sm">of value from terminal value</span></div>`;
+ const ds=[d-.01,d,d+.01],gs=[g-.02,g,g+.02];$("#vt").innerHTML=`<thead><tr><th>Value/share</th>${ds.map(x=>`<th class="n">Disc. ${(x*100).toFixed(2)}%</th>`).join("")}</tr></thead><tbody>${gs.map(gg=>`<tr><th>Growth ${(gg*100).toFixed(1)}%</th>${ds.map(dd=>{const v=val(gg,dd).ps;return `<td class="n">${isFinite(v)?"$"+v.toFixed(2):"–"}</td>`}).join("")}</tr>`).join("")}</tbody>`}};
+const TK={IDX:[.08,.15,100,"Broad index fund"],TECH:[.12,.35,80,"Growth tech company"],BOND:[.04,.05,50,"Bond fund"],UTIL:[.07,.18,60,"Utility company"],BIO:[.1,.55,30,"Biotech startup"]};
+const pcache={};
+function price(t,d){const c=pcache[t]=pcache[t]||[TK[t][2]];if(c.length<=d){const r=rng(t.split("").reduce((a,ch)=>a*31+ch.charCodeAt(0),7)+c.length*13);const[mu,sg]=TK[t];while(c.length<=d){const p=c[c.length-1];c.push(+(p*Math.exp((mu-sg*sg/2)/252+sg*Math.sqrt(1/252)*gauss(r))).toFixed(2))}}return c[d]}
+let ptSym="IDX";
+const ptInit=()=>{if(!S.p)S.p={d:60,c:10000,h:{},l:[]};return S.p};
+SIM.pt={h:()=>{const p=ptInit();const hv=Object.entries(p.h).reduce((a,[t,[q]])=>a+q*price(t,p.d),0),tot=p.c+hv,idx=10000*price("IDX",p.d)/price("IDX",60);
+ return `<p class="note">Simulated market with made-up tickers; prices are not real. Practice orders, sizing and journaling here before the real-money lab.</p><div class="res"><div><div class="big">${money(tot)}</div><span class="muted sm">portfolio value · day ${p.d-60}</span></div><div><div class="big" style="color:${tot>=idx?"var(--sl)":"var(--red)"}">${money(tot-10000)}</div><span class="muted sm">gain vs $10,000 start</span></div><div><div class="big">${money(idx)}</div><span class="muted sm">if you'd bought only IDX</span></div><div><div class="big">${money(p.c)}</div><span class="muted sm">cash</span></div></div>
+ <div class="g2"><div><div class="tabs">${Object.keys(TK).map(t=>`<button class="${t===ptSym?"on":""}" data-ps="${t}">${t} $${price(t,p.d).toFixed(2)}</button>`).join("")}</div><p class="sm muted">${TK[ptSym][3]} · last 60 trading days</p><div class="fig" style="min-height:260px"><svg id="ptc"></svg></div></div>
+ <div><form id="pf" class="card"><h3>Order: ${ptSym} at $${price(ptSym,p.d).toFixed(2)}</h3><div class="fields"><div><label for="pq">Shares</label><input id="pq" type="number" min="1" step="1" value="10"></div><div><label for="ps">Side</label><select id="ps"><option>Buy</option><option>Sell</option></select></div></div><div class="row"><button>Place market order</button></div></form><div class="row" style="margin-top:12px"><button class="ghost" id="p1">Next day</button><button class="ghost" id="p5">Next week</button><button class="ghost" id="p20">Next month</button><button class="ghost" id="prs">Reset</button></div></div></div>
+ <h3 style="margin-top:22px">Holdings</h3><div class="scroll"><table><thead><tr><th>Ticker</th><th class="n">Shares</th><th class="n">Avg cost</th><th class="n">Price</th><th class="n">Value</th><th class="n">Gain</th><th class="n">Weight</th></tr></thead><tbody>${Object.entries(p.h).map(([t,[q,ac]])=>{const v=q*price(t,p.d);return `<tr><td>${t}</td><td class="n">${q}</td><td class="n">$${ac.toFixed(2)}</td><td class="n">$${price(t,p.d).toFixed(2)}</td><td class="n">${money(v)}</td><td class="n">${money(v-q*ac)}</td><td class="n">${Math.round(v/tot*100)}%</td></tr>`}).join("")||"<tr><td colspan=7 class='muted'>No positions. Buy something to begin.</td></tr>"}</tbody></table></div>`},
+ run(){const p=ptInit(),ys=[];for(let d=Math.max(0,p.d-59);d<=p.d;d++)ys.push(price(ptSym,d));chart($("#ptc"),[{y:ys,c:"var(--sl)"}],{f:v=>"$"+v.toFixed(0),xl:i=>"d"+(i-ys.length+1)})}};
+function renderSim(){$("#sim").innerHTML=SIM[simT].h();SIM[simT].run()}
+
+/* ---------- AI teacher ---------- */
+function sysPrompt(){const cw=curWeek(),w=W[cw];return `You are the teacher of a 24-week personal-finance and investing course for one adult student (US-based). Course phases: ${PH.map((p,i)=>(i+1)+". "+p).join("; ")}. The student is on week ${cw+1}: "${w.t}". This week's notes: ${w.n.join(" ")} Lab: ${w.lab} Progress: ${doneN()}/24 weeks stamped; quiz bests: ${PH.map((_,p)=>qBest(p)??"-").join(",")}.
+Teach clearly, with a small worked number example when useful, in under 250 words unless asked for more. End with one short check-your-understanding question. You are an educator, not a licensed adviser: never tell the student to buy or sell a specific security; explain trade-offs and point to their written investment policy statement. Use plain text, no markdown headings.`}
+async function send(q){if(!q||busy||!store.ask)return;chat.push({role:"user",content:q});busy=true;preQ="";route();
+ try{const t=await store.ask(sysPrompt(),chat.slice(-12));chat.push({role:"assistant",content:t||"(no answer)"})}catch(e){chat.push({role:"assistant",content:"Sorry, I couldn't answer: "+(e.message||e.code||"error")})}busy=false;route();const c=$("#chat");if(c)c.scrollTop=c.scrollHeight}
+
+/* ---------- router and events ---------- */
+function route(){const h=(location.hash||"#home").slice(1);let v=h,arg=null;const m=h.match(/^week-(\d+)$/);if(m){v="week";arg=Math.min(23,Math.max(0,+m[1]-1))}if(!V[v])v="home";
+ document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+(v==="week"?"syllabus":v)));
+ $("#app").innerHTML=V[v](arg);
+ if(v==="sims")renderSim();if(v==="dictionary"&&dTab==="terms")$("#dt").innerHTML=dRows();if(v==="quizzes"&&!qz)$("#fc").innerHTML=fcHTML();if(v==="teacher"){const c=$("#chat");c.scrollTop=c.scrollHeight}}
+window.addEventListener("hashchange",()=>{qz=null;route();window.scrollTo(0,0)});
+const app=$("#app");
+app.addEventListener("click",async e=>{const t=e.target.closest("button,a");if(!t)return;const d=t.dataset;
+ if(d.sim){simT=d.sim;route()}
+ else if(d.qp!=null){qz={p:+d.qp,i:0,sc:0,a:null};route()}
+ else if(d.o!=null&&qz){qz.a=+d.o;if(qz.a===QZ[qz.p][qz.i][2])qz.sc++;route()}
+ else if(t.id==="qn"){if(qz.i<4){qz.i++;qz.a=null;route()}else{S.q.push([qz.p,qz.sc,iso(today())]);if(S.q.length>60)S.q=S.q.slice(-60);persist();toast("Score saved: "+qz.sc+"/5");qz=null;route()}}
+ else if(t.id==="qx"){e.preventDefault();qz=null;route()}
+ else if(t.id==="fcard"){fcB=!fcB;$("#fc").innerHTML=fcHTML()}
+ else if(t.id==="fnx"||t.id==="fp"||t.id==="fr"){fcI=t.id==="fr"?Math.floor(Math.random()*DIC.length):(fcI+(t.id==="fnx"?1:DIC.length-1))%DIC.length;fcB=false;$("#fc").innerHTML=fcHTML()}
+ else if(d.dt){dTab=d.dt;route()}
+ else if(d.jt){jT=d.jt;route()}
+ else if(d.dj!=null){S.j.splice(+d.dj,1);persist();route()}
+ else if(d.dr!=null){S.r.splice(+d.dr,1);persist();route()}
+ else if(d.dc!=null){S.c.splice(+d.dc,1);persist();route()}
+ else if(d.chip){send(d.chip)}
+ else if(t.id==="tc"){chat=[];route()}
+ else if(t.id==="askw"){preQ="Explain the key ideas of week "+(location.hash.match(/\d+/)||[1])[0]+" and quiz me."}
+ else if(t.id==="cp"||t.id==="cn"){calM=new Date(calM.getFullYear(),calM.getMonth()+(t.id==="cn"?1:-1),1);route()}
+ else if(t.id==="ct"){calM=null;calSel=null;route()}
+ else if(d.d){calSel=d.d;route()}
+ else if(d.ps){ptSym=d.ps;renderSim()}
+ else if(["p1","p5","p20"].includes(t.id)){ptInit().d+=+t.id.slice(1);persist();renderSim()}
+ else if(t.id==="prs"){S.p=null;persist();renderSim()}
+ else if(t.id==="da"){debts.push(["New debt",1000,15,30]);renderSim()}
+ else if(d.dd!=null){debts.splice(+d.dd,1);renderSim()}
+ else if(t.id==="si"){try{await store.signIn()}catch(er){toast("Sign-in cancelled")}}
+ else if(t.id==="so"){await store.signOut()}
+ else if(t.id==="ex"){try{await navigator.clipboard.writeText(JSON.stringify(S));toast("Copied your data")}catch(er){toast("Copy blocked by the browser")}}
+ else if(t.id==="rs"){if(t.dataset.arm){S=JSON.parse(JSON.stringify(DEF));persist();toast("Progress reset");route()}else{t.dataset.arm=1;t.textContent="Tap again to confirm reset"}}
+});
+app.addEventListener("change",e=>{const t=e.target;
+ if(t.dataset.bit){const i=+t.dataset.wk;const was=stamped(i);setBit(i,+t.dataset.bit,t.checked);route();if(!was&&stamped(i))toast("Week "+(i+1)+" stamped ✓");else if(t.checked)toast("Checked off")}
+ else if(t.id==="sd"&&t.value){S.s=t.value;calM=null;persist();route()}
+ else if(t.id==="dc"){dC=t.value;$("#dt").innerHTML=dRows()}
+ else if(t.dataset.db){const[k,j]=t.dataset.db.split(",").map(Number);debts[k][j]=j?+t.value:t.value;SIM.debt.run()}
+});
+app.addEventListener("input",e=>{const t=e.target;
+ if(t.id==="dq"){dQ=t.value;$("#dt").innerHTML=dRows()}
+ else if(t.closest&&t.closest("#sim")&&!t.closest("form")&&!t.dataset.db&&SIM[simT].run&&simT!=="pt")SIM[simT].run()
+ else if(t.id==="ti")preQ=t.value;
+});
+app.addEventListener("submit",e=>{e.preventDefault();const f=e.target;
+ if(f.id==="tf"){send($("#ti").value.trim())}
+ else if(f.id==="jf"){const x=$("#jx").value.trim();if(!x)return;S.j.push([iso(today()),curWeek()+1,x.slice(0,2000)]);if(S.j.length>300)S.j.shift();persist();toast("Entry saved");route()}
+ else if(f.id==="rf"){S.r.push([$("#rd").value,$("#ra").value,$("#rt").value.toUpperCase().slice(0,12),num("rv"),$("#rs2").value,$("#rh").value.slice(0,600)]);if(S.r.length>400)S.r.shift();persist();toast("Logged");route()}
+ else if(f.id==="cf"){S.c.push([$("#cm").value,num("cw"),num("cs"),num("cl"),num("cr"),num("cb"),$("#cf2").value]);S.c.sort((a,b)=>a[0]<b[0]?-1:1);persist();route()}
+ else if(f.id==="pf"){const p=ptInit(),q=Math.floor(num("pq")),side=$("#ps").value,px=price(ptSym,p.d);if(q<1)return;const h=p.h[ptSym]||[0,0];
+  if(side==="Buy"){if(q*px>p.c){toast("Not enough cash");return}p.c-=q*px;p.h[ptSym]=[h[0]+q,(h[0]*h[1]+q*px)/(h[0]+q)]}
+  else{if(q>h[0]){toast("You don't own that many");return}p.c+=q*px;h[0]-=q;if(h[0])p.h[ptSym]=h;else delete p.h[ptSym]}
+  p.c=Math.round(p.c*100)/100;p.l.push([p.d,ptSym,side==="Buy"?q:-q,px]);if(p.l.length>150)p.l.shift();persist();toast(side+" "+q+" "+ptSym);renderSim()}
+});
+route();initStorage();
+}
+</script>
+</body>
+</html>

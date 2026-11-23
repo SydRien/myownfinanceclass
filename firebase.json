@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "public",
+    "ignore": ["firebase.json", "**/.*"],
+    "rewrites": [{ "source": "/api/teacher", "function": { "functionId": "teacher", "region": "us-central1" } }],
+    "headers": [{ "source": "**/*.@(html|js)", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }]
+  },
+  "firestore": { "rules": "firestore.rules" },
+  "functions": { "source": "functions" }
+}
