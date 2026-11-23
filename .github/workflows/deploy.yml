@@ -15,6 +15,7 @@ jobs:
         env:
           SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
+          if [ -z "$SA" ]; then echo "::notice::Add the FIREBASE_SERVICE_ACCOUNT secret to enable deploys (see README)."; exit 0; fi
           printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
           export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
           npx -y firebase-tools@13 deploy --only hosting,firestore:rules --project myownfinanceclass --non-interactive
