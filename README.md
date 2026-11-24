@@ -10,7 +10,8 @@ Live (after the first deploy): https://myownfinanceclass.web.app
 - `public/firebase-config.js` holds the Firebase web config. It is public by design; `firestore.rules` protects the data.
 - **Firestore** stores one small document per student at `users/{uid}`, as `{ s: "<compact JSON>", t: <time> }`. The rules cap each document at about 195 KB. A typical student uses under 20 KB, so the 1 GiB free tier fits tens of thousands of students.
 - **Sign-in** uses Google, through Firebase Authentication.
-- **AI teacher** (optional) is a Cloud Function at `/api/teacher` (`functions/index.js`). It keeps your Anthropic API key on the server and answers signed-in students only.
+- **Learn tab**: every unit is a guided 5-step lesson (core concepts → go deeper → 3-question quiz → AI coaching on weak spots → homework with journal). Opens after you save your schedule.
+- **AI teacher** (optional) is a Cloud Function at `/api/teacher` (`functions/index.js`). It keeps your Anthropic API key on the server and answers signed-in students only. It can call 8 read-only tools (progress, phase-quiz answers, lesson-quiz answers, journal, real-money log, scorecard, paper portfolio, week content). The tools run in the page against your own saved data; the function only relays Claude's requests and stores nothing.
 
 ## One-time setup to finish deployment
 
