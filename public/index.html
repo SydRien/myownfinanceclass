@@ -285,7 +285,7 @@ async function initStorage(){
   const cfg=window.FIREBASE_CONFIG;
   if(cfg&&cfg.apiKey){
     try{
-      const b="https://www.gstatic.com/firebasejs/10.12.2/";
+      const b="https://www.gstatic.com/firebasejs/13.2.0/";
       const [A,Au,F]=await Promise.all([import(b+"firebase-app.js"),import(b+"firebase-auth.js"),import(b+"firebase-firestore.js")]);
       const app=A.initializeApp(cfg),auth=Au.getAuth(app),fs=F.getFirestore(app);
       store={mode:"firestore",label:"Not signed in",auth,Au,save:async()=>{}};
@@ -297,8 +297,28 @@ async function initStorage(){
       });
       store.signIn=()=>Au.signInWithPopup(auth,new Au.GoogleAuthProvider());
       store.signOut=()=>Au.signOut(auth);
-      store.ask=async(system,messages)=>{const msgs=messages.map(m=>({role:m.role,content:m.content}));for(let n=0;n<6;n++){const t=await auth.currentUser.getIdToken();const r=await fetch("/api/teacher",{method:"POST",headers:{"content-type":"application/json",authorization:"Bearer "+t},body:JSON.stringify({system,messages:msgs,tools:AIT_SCHEMA})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Teacher unavailable");if(j.stop_reason!=="tool_use")return j.text;msgs.push({role:"assistant",content:j.content});msgs.push({role:"user",content:j.content.filter(b=>b.type==="tool_use").map(b=>({type:"tool_result",tool_use_id:b.id,content:JSON.stringify(runTool(b.name,b.input)).slice(0,12000)}))})}return "I looked up a lot of data but couldn't finish. Try a narrower question."};
-      store.askOld=async(system,messages)=>{const t=await auth.currentUser.getIdToken();const r=await fetch("/api/teacher",{method:"POST",headers:{"content-type":"application/json",authorization:"Bearer "+t},body:JSON.stringify({system,messages})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Teacher unavailable");return j.text};
+      // AI teacher: Gemini via Firebase AI Logic (free Spark plan), protected by App Check.
+      try{
+        const [AC,AI]=await Promise.all([import(b+"firebase-app-check.js"),import(b+"firebase-ai.js")]);
+        AC.initializeAppCheck(app,{provider:new AC.ReCaptchaEnterpriseProvider(window.RECAPTCHA_SITE_KEY),isTokenAutoRefreshEnabled:true});
+        const ai=AI.getAI(app,{backend:new AI.GoogleAIBackend()});
+        const sch=js=>{const pr=js.properties||{},ks=Object.keys(pr);if(!ks.length)return null;const o={};ks.forEach(k=>{o[k]=pr[k].type==="integer"?AI.Schema.integer():AI.Schema.string()});return AI.Schema.object({properties:o,optionalProperties:ks.filter(k=>!(js.required||[]).includes(k))})};
+        const FD=AIT.map(t=>{const d={name:t.name,description:t.description},sc=sch(t.input_schema);if(sc)d.parameters=sc;return d});
+        const MODELS=["gemini-4-hydrogen","gemini-3.8-flash","gemini-3.5-flash-lite"];
+        store.provider="gemini";
+        store.ask=async(system,messages)=>{let last;
+          for(const m of MODELS){try{
+            const model=AI.getGenerativeModel(ai,{model:m,systemInstruction:system,tools:[{functionDeclarations:FD}]});
+            const hist=messages.slice(0,-1).map(x=>({role:x.role==="assistant"?"model":"user",parts:[{text:String(x.content)}]}));
+            while(hist.length&&hist[0].role!=="user")hist.shift();
+            const chat=model.startChat({history:hist});
+            let res=await chat.sendMessage(String(messages[messages.length-1].content));
+            for(let n=0;n<6;n++){const calls=res.response.functionCalls?.()||[];if(!calls.length)break;
+              res=await chat.sendMessage(calls.map(c=>({functionResponse:{name:c.name,response:{result:runTool(c.name,c.args||{})}}})))}
+            return res.response.text();
+          }catch(e){last=e;const msg=String(e&&e.message||e);if(/429|quota|exhausted|rate/i.test(msg))throw new Error("The free Gemini allowance is busy right now. Wait a minute and try again.");if(!/404|not.?found|unsupported|is not supported|invalid model/i.test(msg))throw e}}
+          throw last};
+      }catch(e){console.error("AI teacher unavailable",e)}
       route();return;
     }catch(e){console.error(e)}
   }
@@ -408,7 +428,7 @@ V.dictionary=()=>{const cats=["All",...new Set(DIC.map(d=>d[2]))];return `<h1>Di
 const dRows=()=>{const q=dQ.toLowerCase();return DIC.filter(d=>(dC==="All"||d[2]===dC)&&(d[0]+" "+d[1]).toLowerCase().includes(q)).map(d=>`<tr><td><b>${esc(d[0])}</b></td><td>${esc(d[1])}</td><td class="sm muted">${d[2]}</td></tr>`).join("")||"<tr><td colspan=3 class='muted'>No match. Try asking the AI teacher.</td></tr>"};
 const chats={main:[]};let chat=chats.main,busy=false,preQ="";
 V.teacher=()=>`<h1>AI teacher</h1><p class="lead">Ask anything about the course. The teacher knows your current week and progress, explains with examples, and checks your understanding. It teaches; it won't tell you what to buy.</p>
- ${store.ask?"":`<p class="note">${store.mode==="firestore"?"Sign in on Home to use the teacher.":"The teacher isn't available in this view."}</p>`}
+ ${store.ask?(store.provider==="gemini"?`<p class="sm muted">Powered by Google Gemini (free tier). Google may use these chats, including what the teacher looks up, to improve its products. Don't type account numbers or other personal identifiers.</p>`:""):`<p class="note">The teacher isn't available in this view.</p>`}
  <div class="chat" id="chat">${chat.length?chat.map(m=>`<div class="msg ${m.role==="user"?"u":"a"}">${esc(m.content)}</div>`).join(""):`<div class="msg a">Hi. You're on week ${curWeek()+1}: ${esc(W[curWeek()].t)}. Ask me a question, or pick one below.</div>`}${busy?`<div class="msg a">Thinking…</div>`:""}</div>
  <div class="chips">${["Explain this week's main idea simply","Quiz me with 3 questions on this week","Critique my investment policy statement","Give me 3 sample fraud pitches to spot red flags","What's the difference between an ETF and a mutual fund?"].map(c=>`<button data-chip="${esc(c)}">${esc(c)}</button>`).join("")}</div>
  <form id="tf" class="row"><input id="ti" placeholder="Type your question" style="flex:1 1 16em" value="${esc(preQ)}" ${store.ask?"":"disabled"}><button ${store.ask&&!busy?"":"disabled"}>Send</button><button type="button" class="ghost" id="tc">Clear</button></form><p class="sm muted" style="margin-top:8px">Chats aren't stored, which keeps your saved data small. Copy anything worth keeping into your Journal.</p>`;
@@ -556,7 +576,7 @@ V.learn=arg=>{
  if(k===3){const ch=chats["w"+i]||[],Qs=lessonQs(i),saved=S.lq[i]||"",miss=Qs.filter((Q,j)=>saved[j]!==undefined&&+saved[j]!==Q[2]);
   const coach=miss.length?`I'm on lesson ${i+1} (${w.t}). In the lesson quiz I missed: ${miss.map(Q=>'"'+Q[0]+'"').join("; ")}. Look up my results and coach me on these weak spots, then check my understanding.`:`I'm on lesson ${i+1} (${w.t}). Look up my progress and quiz history, find my weakest spot in this phase, and coach me on it.`;
   body=`<p class="lead">${miss.length?`You missed ${miss.length} question${miss.length>1?"s":""}. Start with coaching on those, then ask anything else.`:"Nice work on the quiz. Use the teacher to go further or connect this lesson to your own money."}</p>
-  ${store.ask?"":`<p class="note">${store.mode==="firestore"?"Sign in on Home to use the teacher.":"The teacher isn't available in this view."}</p>`}
+  ${store.ask?(store.provider==="gemini"?`<p class="sm muted">Powered by Google Gemini (free tier). Google may use these chats, including what the teacher looks up, to improve its products. Don't type account numbers or other personal identifiers.</p>`:""):`<p class="note">The teacher isn't available in this view.</p>`}
   <div class="chat" id="chat">${ch.length?ch.map(m=>`<div class="msg ${m.role==="user"?"u":"a"}">${esc(m.content)}</div>`).join(""):`<div class="msg a">I can see your saved progress and quiz answers. Tap a prompt below to begin.</div>`}${busy?`<div class="msg a">Looking at your work…</div>`:""}</div>
   <div class="chips">${[[miss.length?"Coach me on what I missed":"Find my weak spot",coach],["Give me a harder example","Give me a harder worked example for lesson "+(i+1)+" and walk me through it."],["Connect it to my money","How does lesson "+(i+1)+" apply to my own situation? Check my journal and logs first."],["Quiz me again","Ask me 3 new questions on lesson "+(i+1)+", one at a time, and wait for my answers."]].map(([l,q])=>`<button data-lchip="${i}" data-q="${esc(q)}">${esc(l)}</button>`).join("")}</div>
   <form id="lf" class="row" data-lw="${i}"><input id="li" placeholder="Ask a follow-up question" style="flex:1 1 16em" ${store.ask?"":"disabled"}><button ${store.ask&&!busy?"":"disabled"}>Send</button></form>

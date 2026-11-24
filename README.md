@@ -11,7 +11,8 @@ Live (after the first deploy): https://myownfinanceclass.web.app
 - **Firestore** stores one small document per student at `users/{uid}`, as `{ s: "<compact JSON>", t: <time> }`. The rules cap each document at about 195 KB. A typical student uses under 20 KB, so the 1 GiB free tier fits tens of thousands of students.
 - **Sign-in** uses Google, through Firebase Authentication.
 - **Learn tab**: every unit is a guided 5-step lesson (core concepts → go deeper → 3-question quiz → AI coaching on weak spots → homework with journal). Opens after you save your schedule.
-- **AI teacher** (optional) is a Cloud Function at `/api/teacher` (`functions/index.js`). It keeps your Anthropic API key on the server and answers signed-in students only. It can call 8 read-only tools (progress, phase-quiz answers, lesson-quiz answers, journal, real-money log, scorecard, paper portfolio, week content). The tools run in the page against your own saved data; the function only relays Claude's requests and stores nothing.
+- **AI teacher** on the live site uses **Google Gemini through Firebase AI Logic** (free Spark plan, no API key), protected by **App Check** with a Fraud Defense (reCAPTCHA Enterprise) site key in `public/firebase-config.js`. It tries `gemini-4-hydrogen`, then `gemini-3.8-flash`, then `gemini-3.5-flash-lite`. Free-tier note: Google may use teacher chats to improve its products.
+- **Optional Claude teacher**: `functions/index.js` is a Cloud Function at `/api/teacher` (needs the Blaze plan). It keeps your Anthropic API key on the server and answers signed-in students only. It can call 8 read-only tools (progress, phase-quiz answers, lesson-quiz answers, journal, real-money log, scorecard, paper portfolio, week content). The tools run in the page against your own saved data; the function only relays Claude's requests and stores nothing.
 
 ## One-time setup to finish deployment
 
@@ -27,16 +28,9 @@ To turn on automatic deploys, do these steps once:
 
 Delete the downloaded JSON file afterwards. Never commit it.
 
-## Optional: the AI teacher on the hosted site
+## Optional: Claude instead of Gemini
 
-The teacher needs the Firebase **Blaze** (pay-as-you-go) plan, because Cloud Functions call an outside API. With the Firebase CLI:
-
-```
-firebase functions:secrets:set ANTHROPIC_API_KEY
-firebase deploy --only functions
-```
-
-Without it, everything else still works. The teacher page explains that it's off.
+Requires the Firebase **Blaze** plan. Set the secret with `firebase functions:secrets:set ANTHROPIC_API_KEY`, run `firebase deploy --only functions`, and switch `store.ask` back to the `/api/teacher` version.
 
 ## Run locally
 

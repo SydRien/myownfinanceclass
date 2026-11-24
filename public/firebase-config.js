@@ -7,3 +7,5 @@ window.FIREBASE_CONFIG = {
   messagingSenderId: "1058734709992",
   appId: "1:1058734709992:web:873c77f3d19abe488a3d5d"
 };
+// Fraud Defense (reCAPTCHA Enterprise) site key for App Check. Public by design.
+window.RECAPTCHA_SITE_KEY = "6LcLyTAuAAAAADnrR5ysoIoFVeH6ce_2WPZX0BHG";
