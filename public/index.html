@@ -316,8 +316,9 @@ async function initStorage(){
             for(let n=0;n<6;n++){const calls=res.response.functionCalls?.()||[];if(!calls.length)break;
               res=await chat.sendMessage(calls.map(c=>({functionResponse:{name:c.name,response:{result:runTool(c.name,c.args||{})}}})))}
             return res.response.text();
-          }catch(e){last=e;const msg=String(e&&e.message||e);if(/429|quota|exhausted|rate/i.test(msg))throw new Error("The free Gemini allowance is busy right now. Wait a minute and try again.");if(!/404|not.?found|unsupported|is not supported|invalid model/i.test(msg))throw e}}
-          throw last};
+          }catch(e){last=e;const msg=String(e&&e.message||e);console.warn("Gemini "+m+" failed:",msg);if(/app.?check|permission|PERMISSION_DENIED|API key/i.test(msg))break}}
+          const lm=String(last&&last.message||last);
+          throw new Error(/\b(429|500|503)\b|high demand|quota|exhausted|overloaded/i.test(lm)?"Gemini's free models are busy right now. Wait a minute and try again.":"The teacher couldn't reach Gemini ("+lm.slice(0,140)+").")};
       }catch(e){console.error("AI teacher unavailable",e)}
       route();return;
     }catch(e){console.error(e)}
