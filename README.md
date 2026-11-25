@@ -1,4 +1,4 @@
-# Money Course Studio
+# Margin Notes
 
 A study site for a 24-week personal-finance and investing course: syllabus, lecture notes and readings, a calendar, quizzes and flashcards, five practice simulators, a dictionary, an AI teacher, and a journal for the real-money lab. Progress checks and a daily "Today" list show what's done and what's due.
 

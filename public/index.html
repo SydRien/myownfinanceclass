@@ -3,194 +3,197 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Money Course Studio</title>
+<title>Margin Notes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&family=IM+Fell+English+SC&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* VOICE everyday study tool dressed as an antique atlas: calm, scholarly, unhurried
-   IDEA a bound atlas of the money world: each page a hand-tinted plate inside double-ruled borders
-   PICTURE the 24-week path as a sheet of numbered plates, washed sea-green when done, mustard where you are
-   COLOUR parchment #f1e4c8 ground, paper #faf2e0, sepia ink #3a2e22, rules #8b7457, sea #a9c4b4, mustard #e9d46b, lilac #cfb6e8; night parchment #1d1913
-   TYPE IM Fell English (engraved titles) + EB Garamond text
-   LAYOUT left sidebar with emblem + index; top bar with centered small-caps title and lilac pill; plates in the main field; phone: sidebar becomes a top index */
-:root{color-scheme:light dark;--bg:light-dark(#efe1c4,#1b1712);--paper:light-dark(#faf2e0,#25201a);--side:light-dark(#f4e8cf,#211c16);--ink:light-dark(#3a2e22,#efe2c8);--mut:light-dark(#6e5b45,#b4a286);--line:light-dark(#c9b28c,#4a3f31);--rule:light-dark(#8b7457,#9c8664);--pan:light-dark(#f3e7cd,#2c261e);--card:var(--paper);--sl:light-dark(#4f7d6a,#8fc0aa);--sea:light-dark(#b4cdbd,#36584b);--mus:light-dark(#ecd772,#8a7a2a);--lil:light-dark(#d4bdee,#5d4a78);--lilink:light-dark(#3d2a57,#f0e6ff);--red:light-dark(#a4532f,#e09a6c);--lnk:light-dark(#2f5d7c,#9cc6e6);--on:light-dark(#fffaf0,#1b1712);--ok:var(--sl)}
+/* VOICE everyday study companion: calm, precise, a little personal, like a well-kept notebook
+   IDEA margin notes: clean white pages, blue-pen ink for you and your next step, yellow highlighter for what's done
+   PICTURE the course as a compounding curve on Home: each dot a lesson, finished ones highlighted, the next one circled in pen
+   COLOUR paper #ffffff, margin #f4f5f7, ink #1a1d24, graphite #5b6270, pen blue #2f43e0, highlighter #ffe566, red #e5484d; night #14161b
+   TYPE Instrument Serif (headings) + Instrument Sans (everything else)
+   LAYOUT sidebar index with a margin rule; slim top bar with the next step; content in one calm column of sections; phone: sidebar becomes a compact top index */
+:root{color-scheme:light dark;
+ --bg:light-dark(#ffffff,#14161b);--paper:light-dark(#ffffff,#181b21);--card:var(--paper);--side:light-dark(#f4f5f7,#111318);--pan:light-dark(#f4f5f7,#1d2028);
+ --ink:light-dark(#1a1d24,#eceef2);--mut:light-dark(#5b6270,#9aa1ae);--line:light-dark(#e3e5ea,#2a2e37);--rule:light-dark(#c9cdd6,#3a3f4a);
+ --sl:light-dark(#2f43e0,#8c9bff);--lnk:var(--sl);--soft:light-dark(#e9ecff,#232a52);--hl:light-dark(#ffe566,#cdb43c);--hlt:light-dark(#fff3b0,#3b3416);
+ --red:light-dark(#e5484d,#ff6b6e);--on:light-dark(#ffffff,#0f1220);--sea:var(--hlt);--mus:var(--hl);--lil:var(--sl);--lilink:var(--on);--ok:var(--sl)}
 :root[data-theme=light]{color-scheme:light}
 :root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 html{scroll-padding-top:80px;height:100%}
-body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:17px/1.55 "EB Garamond",Georgia,serif;overflow-x:clip;display:grid;grid-template-columns:250px minmax(0,1fr)}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .35 0 0 0 0 .2 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-a{color:var(--lnk)}
-h1,h2,h3{font-family:"IM Fell English",Georgia,serif;font-weight:400;letter-spacing:0;line-height:1.1;margin:0 0 .4em;text-wrap:balance}
-h1{font-size:clamp(30px,4vw,46px)}
-h2{font-size:clamp(22px,2.4vw,27px)}
-h3{font-size:20px}
-p{margin:0 0 .8em}
-/* sidebar */
-.side{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--side);border-right:1px solid var(--line);padding:22px 18px;z-index:2;display:flex;flex-direction:column;gap:18px}
-.brand{display:flex;flex-direction:column;align-items:flex-start;gap:12px;color:var(--ink);text-decoration:none}
-.brand svg{width:58px;height:58px}
-.brand span{font-family:"IM Fell English",serif;font-size:20px;line-height:1.15}
-.brand small{display:block;font:italic 15px "EB Garamond",serif;color:var(--mut)}
-.side hr{border:0;border-top:1px solid var(--line);margin:0;width:100%}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:16px/1.6 "Instrument Sans",system-ui,sans-serif;overflow-x:clip;display:grid;grid-template-columns:248px minmax(0,1fr);-webkit-font-smoothing:antialiased}
+a{color:var(--lnk);text-underline-offset:3px;text-decoration-thickness:1px}
+h1,h2,h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;letter-spacing:-.01em;line-height:1.08;margin:0 0 .45em;text-wrap:balance}
+h1{font-size:clamp(34px,4.4vw,52px)}
+h2{font-size:clamp(24px,2.6vw,30px)}
+h3{font-size:21px}
+p{margin:0 0 .85em}
+.side{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--side);border-right:1px solid var(--line);box-shadow:inset -3px 0 0 -1px var(--soft);padding:22px 14px;z-index:2;display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;color:var(--ink);text-decoration:none;padding:0 6px}
+.brand svg{width:36px;height:36px;flex:none}
+.brand span{font:400 24px/1 "Instrument Serif",serif;letter-spacing:-.01em}
+.brand small{display:block;font:500 13px/1.3 "Instrument Sans",sans-serif;color:var(--mut);margin-top:4px;letter-spacing:0}
+.side hr{border:0;border-top:1px solid var(--line);margin:0 6px}
 nav{display:flex;flex-direction:column;gap:2px}
-nav a{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:17px;padding:8px 10px;border-radius:8px;min-height:40px}
-nav a::before{content:"";width:9px;height:9px;border-radius:50%;border:1.5px solid var(--rule);flex:none}
-nav a:hover{background:var(--pan)}
-nav a.on{background:var(--pan);box-shadow:inset 0 0 0 1px var(--line)}
-nav a.on::before{background:var(--rule)}
-.sidefoot{margin-top:auto;font-size:15px;color:var(--mut)}
-.sidefoot b{font-family:"IM Fell English",serif;font-weight:400;font-size:26px;color:var(--ink);display:block}
-/* top bar */
+nav a{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--mut);font-size:15px;font-weight:500;padding:9px 10px;border-radius:9px;min-height:40px}
+nav a svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+nav a:hover{background:var(--paper);color:var(--ink)}
+nav a.on{background:var(--paper);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+nav a.on svg{stroke:var(--sl)}
+.sidefoot{margin-top:auto;font-size:14px;color:var(--mut);padding:0 6px}
+.sidefoot b{font:400 34px/1 "Instrument Serif",serif;color:var(--ink);display:block;margin-bottom:4px}
 .wrap{position:relative;z-index:1;min-width:0}
-.top{position:sticky;top:0;z-index:3;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:12px max(18px,3vw);background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
-.top .crumb{color:var(--mut);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.top .ttl{font-family:"IM Fell English SC","IM Fell English",serif;font-size:19px;letter-spacing:.06em;text-align:center}
-.top .act{justify-self:end}
-.pill{display:inline-flex;align-items:center;min-height:40px;padding:0 20px;border-radius:99px;background:var(--lil);color:var(--lilink);text-decoration:none;font:500 16px "EB Garamond",serif;border:1px solid color-mix(in srgb,var(--lilink) 25%,transparent);white-space:nowrap}
-main{max-width:1240px;margin:0 auto;padding:clamp(20px,3vw,40px) max(18px,3vw) 72px}
-.lead{color:var(--mut);font-size:18px;max-width:68ch;font-style:italic}
-.g2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px}
-.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(15em,1fr));gap:18px}
-/* plates: double-ruled frames */
-.pan,.card,.today,.stat,.cal,.flash.back{background:var(--paper);border:1px solid var(--rule);box-shadow:inset 0 0 0 4px var(--paper),inset 0 0 0 5px var(--line),0 1px 0 var(--line)}
-.pan,.card{border-radius:3px;padding:24px}
+.top{position:sticky;top:0;z-index:3;display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:12px max(20px,3.2vw);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .crumb{color:var(--mut);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .ttl{display:none}
+.pill{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:10px;background:var(--sl);color:var(--on);text-decoration:none;font:600 14px "Instrument Sans",sans-serif;white-space:nowrap}
+main{max-width:1180px;margin:0 auto;padding:clamp(24px,3.4vw,48px) max(20px,3.2vw) 80px}
+.lead{color:var(--mut);font-size:18px;max-width:64ch}
+.g2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(15em,1fr));gap:16px}
+.pan,.today{background:var(--pan);border-radius:18px;padding:26px}
+.card,.cal,.flash.back{background:var(--paper);border:1px solid var(--line);border-radius:14px}
+.card{padding:22px}
+.stat{background:var(--pan);border-radius:14px;padding:14px 16px}
 .muted{color:var(--mut)}
-.sm{font-size:15px}
-.tag{display:inline-block;font-size:14px;padding:1px 10px;border-radius:99px;border:1px solid var(--line);background:var(--pan);color:var(--sl);white-space:nowrap}
-.tag.r{color:var(--red)}
-button,.btn{font:500 16px "EB Garamond",serif;min-height:44px;padding:0 20px;border-radius:99px;border:1px solid color-mix(in srgb,var(--lilink) 30%,transparent);background:var(--lil);color:var(--lilink);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-button.ghost,.btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
-button:hover,.btn:hover{filter:brightness(1.04)}
-button:disabled{opacity:.5;cursor:default}
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--red);outline-offset:2px}
-input,select,textarea{font:17px "EB Garamond",serif;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:9px 12px;min-height:44px;width:100%}
-textarea{min-height:96px;resize:vertical}
-label{display:block;font-size:15px;font-weight:600;margin-bottom:4px}
+.sm{font-size:14px}
+.tag{display:inline-block;font-size:13px;font-weight:600;padding:2px 10px;border-radius:99px;background:var(--soft);color:var(--sl);white-space:nowrap}
+.tag.r{background:var(--pan);color:var(--mut)}
+button,.btn{font:600 15px "Instrument Sans",sans-serif;min-height:44px;padding:0 18px;border-radius:10px;border:1px solid var(--sl);background:var(--sl);color:var(--on);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+button.ghost,.btn.ghost{background:var(--paper);color:var(--ink);border-color:var(--rule)}
+button:hover,.btn:hover{filter:brightness(1.06)}
+button.ghost:hover,.btn.ghost:hover{border-color:var(--ink);filter:none}
+button:disabled{opacity:.45;cursor:default;filter:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--sl);outline-offset:2px}
+input,select,textarea{font:16px "Instrument Sans",sans-serif;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:10px 12px;min-height:44px;width:100%}
+textarea{min-height:100px;resize:vertical}
+label{display:block;font-size:14px;font-weight:600;margin-bottom:5px}
 .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px;margin-bottom:14px}
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .scroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:16px}
-th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font:400 15px "IM Fell English SC","IM Fell English",serif;color:var(--mut);letter-spacing:.03em;border-bottom:1px solid var(--rule)}
-td.n,th.n{text-align:right;font-variant-numeric:tabular-nums lining-nums;white-space:nowrap}
-/* the atlas of weeks */
-.path{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:22px 26px;margin:24px 0 30px}
-.ph h4{margin:0 0 8px;font:400 15px "IM Fell English",serif;color:var(--mut)}
-.cells{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
-.cell{aspect-ratio:1/1.12;border-radius:2px;border:1px solid var(--rule);background:var(--paper);box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 4px var(--line);display:flex;flex-direction:column;justify-content:space-between;padding:9px;text-decoration:none;color:var(--ink);position:relative;overflow:hidden}
-.cell b{font:400 22px "IM Fell English",serif;line-height:1}
-.cell span{font-size:13px;line-height:1.2;color:var(--mut)}
-.cell.part{background:repeating-linear-gradient(135deg,var(--paper) 0 5px,color-mix(in srgb,var(--line) 45%,var(--paper)) 5px 6px)}
-.cell.done{background:var(--sea);box-shadow:inset 0 0 0 3px var(--sea),inset 0 0 0 4px color-mix(in srgb,var(--rule) 60%,var(--sea))}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;font-weight:600;color:var(--mut)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.path{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:22px 28px;margin:28px 0 34px}
+.ph h4{margin:0 0 8px;font:600 14px "Instrument Sans",sans-serif;color:var(--ink)}
+.ph h4 span{color:var(--mut);font-weight:500}
+.cells{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.cell{aspect-ratio:1/1.08;border-radius:12px;border:1px solid var(--line);background:var(--paper);display:flex;flex-direction:column;justify-content:space-between;padding:10px;text-decoration:none;color:var(--ink);position:relative;overflow:hidden}
+.cell b{font:400 24px/1 "Instrument Serif",serif}
+.cell span{font-size:12px;line-height:1.25;color:var(--mut)}
+.cell.part{background:linear-gradient(var(--paper),var(--paper)) padding-box,linear-gradient(135deg,var(--hl),var(--line)) border-box;border-color:transparent}
+.cell.done{background:var(--hlt);border-color:color-mix(in srgb,var(--hl) 70%,var(--line))}
 .cell.done span{color:var(--ink)}
-.cell.now{background:color-mix(in srgb,var(--mus) 55%,var(--paper));border-width:2px}
-.cell:hover{border-color:var(--ink)}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));gap:14px;margin-bottom:24px}
-.stat{border-radius:3px;padding:14px 16px}
-.stat b{display:block;font:400 clamp(26px,3vw,34px)/1.1 "IM Fell English",serif}
-.ev{display:grid;grid-template-columns:6em minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px dotted var(--rule)}
+.cell.now{border:2px solid var(--sl);box-shadow:0 0 0 4px var(--soft)}
+.cell:hover{border-color:var(--rule)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));gap:12px;margin-bottom:26px}
+.stat b{display:block;font:400 clamp(28px,3vw,36px)/1.05 "Instrument Serif",serif}
+.ev{display:grid;grid-template-columns:6em minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
 .ev time{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
-.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle;border:1px solid color-mix(in srgb,var(--ink) 30%,transparent)}
-.k-lec{background:var(--lnk)}.k-read{background:var(--mus)}.k-lab{background:var(--ink)}.k-quiz{background:var(--red)}.k-jr{background:var(--line)}
-.checks label{display:flex;gap:10px;align-items:center;font-weight:400;font-size:17px;padding:7px 0;cursor:pointer}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:middle}
+.k-lec{background:var(--sl)}.k-read{background:#e0b400}.k-lab{background:var(--ink)}.k-quiz{background:var(--red)}.k-jr{background:var(--rule)}.k-cls{background:color-mix(in srgb,var(--sl) 45%,var(--paper))}
+.checks label{display:flex;gap:10px;align-items:center;font-weight:500;font-size:16px;padding:7px 0;cursor:pointer}
 .checks input{width:20px;height:20px;min-height:0;accent-color:var(--sl)}
 ul.links{padding:0;list-style:none;margin:0}
-ul.links li{padding:8px 0;border-bottom:1px dotted var(--rule)}
-.notes li{margin-bottom:6px}
-/* calendar as a gridded chart */
-.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-radius:3px;overflow:hidden;padding:5px}
-.cal div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:92px;padding:6px;font-size:14px}
+ul.links li{padding:10px 0;border-bottom:1px solid var(--line)}
+.notes li{margin-bottom:8px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:hidden}
+.cal div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:96px;padding:7px;font-size:13px}
 .cal div:nth-child(7n){border-right:0}
-.cal .hd{min-height:0;font:400 14px "IM Fell English SC","IM Fell English",serif;color:var(--mut);background:var(--pan)}
+.cal .hd{min-height:0;font-weight:600;color:var(--mut);background:var(--pan)}
 .cal .o{opacity:.4}
-.cal .t{background:color-mix(in srgb,var(--mus) 35%,var(--paper))}
-.cal button.day{all:unset;cursor:pointer;display:block;font:400 16px "IM Fell English",serif;margin-bottom:4px}
-.cal .e{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5}
-/* quiz + flash */
-.opt{display:block;width:100%;text-align:left;background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:4px;margin:8px 0;font-weight:400;padding:10px 14px;height:auto}
-.opt.right{background:var(--sea);border-color:var(--sl)}
-.opt.wrong{background:color-mix(in srgb,var(--red) 18%,var(--paper));border-color:var(--red)}
-.flash{min-height:240px;display:flex;align-items:center;justify-content:center;text-align:center;font:400 clamp(24px,3vw,32px) "IM Fell English",serif;cursor:pointer;padding:28px;border-radius:3px;background:color-mix(in srgb,var(--sea) 55%,var(--paper));border:1px solid var(--rule);color:var(--ink);width:100%;height:auto}
-.flash.back{font:18px/1.5 "EB Garamond",serif}
-/* sims */
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
-.tabs button{background:transparent;color:var(--ink);border-color:var(--rule)}
-.tabs button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.fig{position:relative;min-height:320px;background:color-mix(in srgb,var(--sea) 22%,var(--paper));border:1px solid var(--rule);border-radius:3px}
+.cal .t{background:var(--soft)}
+.cal button.day{all:unset;cursor:pointer;display:inline-block;font:600 14px "Instrument Sans",sans-serif;margin-bottom:4px;padding:1px 6px;border-radius:6px}
+.cal .t button.day{background:var(--sl);color:var(--on)}
+.cal .e{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.55}
+.opt{display:block;width:100%;text-align:left;background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:10px;margin:8px 0;font-weight:500;padding:11px 14px;height:auto}
+.opt:hover{border-color:var(--ink);filter:none}
+.opt.right{background:var(--hlt);border-color:color-mix(in srgb,var(--hl) 80%,var(--ink))}
+.opt.wrong{background:color-mix(in srgb,var(--red) 10%,var(--paper));border-color:var(--red)}
+.opt.sel{background:var(--soft);border-color:var(--sl)}
+.flash{min-height:240px;display:flex;align-items:center;justify-content:center;text-align:center;font:400 clamp(28px,3.4vw,40px)/1.1 "Instrument Serif",serif;cursor:pointer;padding:28px;border-radius:14px;background:var(--hlt);border:0;color:var(--ink);width:100%;height:auto}
+.flash.back{font:500 18px/1.55 "Instrument Sans",sans-serif;background:var(--paper)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;padding:4px;background:var(--pan);border-radius:12px;width:fit-content;max-width:100%}
+.tabs button{background:transparent;color:var(--mut);border:0;min-height:38px;border-radius:9px;font-weight:600}
+.tabs button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(20,22,27,.08),0 0 0 1px var(--line)}
+.fig{position:relative;min-height:320px;background:var(--paper);border:1px solid var(--line);border-radius:14px}
 .fig>svg{position:absolute;inset:0;width:100%;height:100%}
-svg text{font:14px "EB Garamond",serif;fill:var(--mut);paint-order:stroke;stroke:var(--paper);stroke-width:4px}
-.big{font:400 clamp(30px,4vw,42px)/1.05 "IM Fell English",serif}
-.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px;margin:12px 0}
-/* chat */
+svg text{font:500 13px "Instrument Sans",sans-serif;fill:var(--mut);paint-order:stroke;stroke:var(--paper);stroke-width:4px}
+.big{font:400 clamp(32px,4vw,46px)/1.02 "Instrument Serif",serif}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5em,1fr));gap:14px 18px;margin:14px 0}
+.res .big{font-size:clamp(26px,2.5vw,34px)}
 .chat{display:flex;flex-direction:column;gap:12px;min-height:320px;max-height:60vh;overflow-y:auto;padding:4px 2px 12px}
-.msg{max-width:78ch;padding:12px 16px;border-radius:4px;white-space:pre-wrap}
-.msg.u{align-self:flex-end;background:var(--lil);color:var(--lilink)}
-.msg.a{align-self:flex-start;background:var(--paper);border:1px solid var(--line)}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
-.chips button{background:var(--paper);color:var(--ink);border-color:var(--rule);font-size:15px}
-.note{border-left:3px solid var(--red);padding:8px 12px;background:var(--paper);border-radius:0 3px 3px 0;font-size:16px}
+.msg{max-width:72ch;padding:12px 16px;border-radius:14px;white-space:pre-wrap}
+.msg.u{align-self:flex-end;background:var(--sl);color:var(--on);border-bottom-right-radius:4px}
+.msg.a{align-self:flex-start;background:var(--pan);border-bottom-left-radius:4px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chips button{background:var(--paper);color:var(--ink);border-color:var(--rule);font-weight:500;font-size:14px;min-height:38px;border-radius:99px}
+.note{border-left:3px solid var(--hl);padding:10px 14px;background:var(--hlt);border-radius:0 10px 10px 0;font-size:15px}
 .hide{display:none!important}
-#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:99px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;font-size:14px;font-weight:500;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
 #toast.on{opacity:1}
 @media(prefers-reduced-motion:reduce){#toast{transition:none}}
 .cal .dots{display:none}
-.lesson{display:grid;grid-template-columns:minmax(220px,300px) minmax(0,1fr);gap:24px;align-items:start}
-.lrail{position:sticky;top:76px;margin:0}
-.rail{list-style:none;padding:0;margin:0;display:grid;gap:6px}
-.rstep{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:center;width:100%;padding:8px 10px;border-radius:4px;color:var(--ink)}
-.rstep:hover{background:var(--pan)}
-.rstep.on{background:color-mix(in srgb,var(--mus) 40%,var(--paper));box-shadow:inset 0 0 0 1px var(--rule)}
-.rstep:focus-visible{outline:2px solid var(--red)}
-.rn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:inline-flex;align-items:center;justify-content:center;font:400 16px "IM Fell English",serif;background:var(--paper)}
-.rstep.ok .rn{background:var(--sea);border-color:var(--sl)}
-.rstep b{display:block;font-weight:600}.rstep small{display:block;color:var(--mut);font-size:14px;line-height:1.3}
-.lbody h2{margin-top:4px}
-.big3{padding-left:1.3em;font-size:19px}.big3 li{margin-bottom:12px}
-.lnav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px;padding-top:16px;border-top:1px dotted var(--rule);flex-wrap:wrap}
-.lq{border:0;padding:0;margin:0 0 16px}.lq legend{font-weight:600;margin-bottom:4px;padding:0}
-.opt.sel{background:color-mix(in srgb,var(--lil) 55%,var(--paper));border-color:var(--lilink)}
-.hw{border-bottom:1px dotted var(--rule);padding:4px 0 14px;margin-bottom:12px}
-.ckrow{display:flex;gap:10px;align-items:center;font-weight:400;font-size:17px}
-.lcard{text-decoration:none;color:var(--ink);display:block}
-.lcard:hover{border-color:var(--ink)}
-@media(max-width:900px){.lesson{grid-template-columns:minmax(0,1fr)}.lrail{position:static}.rstep small{display:none}.rail{grid-template-columns:repeat(5,minmax(0,1fr))}.rstep{grid-template-columns:1fr;justify-items:center;text-align:center;padding:6px 2px}.rstep b{font-size:12px;font-weight:500}}
-.plate{background:var(--paper);border:1px solid var(--rule);box-shadow:inset 0 0 0 4px var(--paper),inset 0 0 0 5px var(--line);border-radius:3px;padding:12px;margin:6px 0 22px}
-.voy{min-height:300px;background:var(--sea);border:1px solid var(--rule)}
-.plate figcaption{text-align:center;font:italic 16px "EB Garamond",serif;color:var(--mut);padding-top:8px}
-.k-cls{background:var(--sl)}
-.pbar{height:9px;border-radius:99px;background:color-mix(in srgb,var(--line) 55%,var(--paper));border:1px solid var(--line);overflow:hidden;margin:4px 0}
-.pbar i{display:block;height:100%;background:var(--sl)}
-.ph .pbar{height:6px;margin:0 0 8px}
-.today{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px;border-radius:3px;padding:26px;margin:18px 0 6px}
+.pbar{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin:6px 0}
+.pbar i{display:block;height:100%;background:var(--sl);border-radius:99px}
+.ph .pbar{height:4px;margin:0 0 10px}
+.today{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:32px;margin:22px 0 8px}
 .ev.c{grid-template-columns:30px minmax(0,1fr);align-items:center}
 .ev .ck{width:20px;height:20px;min-height:0;accent-color:var(--sl);cursor:pointer}
-.tick{display:inline-flex;width:20px;height:20px;border:1.5px solid var(--rule);border-radius:3px;align-items:center;justify-content:center;font-size:14px;color:var(--paper);font-weight:700}
+.tick{display:inline-flex;width:20px;height:20px;border:1.5px solid var(--rule);border-radius:6px;align-items:center;justify-content:center;font-size:13px;color:var(--on);font-weight:700}
 .tick.on{background:var(--sl);border-color:var(--sl)}
-.strike{text-decoration:line-through;opacity:.6}
-.donelist{list-style:none;padding:0;margin:0}.donelist li{padding:3px 0;color:var(--sl)}
-.mini{position:absolute;left:0;bottom:0;height:4px;width:var(--p);background:var(--red)}
+.strike{text-decoration:line-through;text-decoration-color:var(--mut);opacity:.6}
+.donelist{list-style:none;padding:0;margin:0}.donelist li{padding:3px 0}
+.donelist li::first-letter{color:var(--sl)}
+.mini{position:absolute;left:0;bottom:0;height:3px;width:var(--p);background:var(--sl)}
 .cell.done .mini{display:none}
-.start{margin:18px 0}.start ol{padding-left:1.2em;margin:0 0 14px}.start li{margin-bottom:6px}
-.ex{background:color-mix(in srgb,var(--mus) 22%,var(--paper));border:1px dashed var(--rule);border-radius:3px;padding:12px 14px;font-variant-numeric:lining-nums}
-.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(14em,1fr));gap:8px 18px;margin:0}.terms dt{font-weight:600}.terms dd{margin:0;color:var(--mut);font-size:15px}
-@media(max-width:1100px){.top{grid-template-columns:1fr auto}.top .ttl{display:none}}
-@media(max-width:1000px){body{grid-template-columns:200px minmax(0,1fr)}.g2,.today{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:700px){body{display:block}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px 16px;gap:10px;border-right:0;border-bottom:1px solid var(--line)}.brand{flex-direction:row;align-items:center}.brand svg{width:38px;height:38px}.brand small,.side hr,.sidefoot{display:none}nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:4px}nav a{font-size:15px;padding:6px 4px;justify-content:center;min-height:38px}nav a::before{display:none}.top{grid-template-columns:1fr auto;padding:10px 16px}.top .ttl{display:none}.top .crumb{display:block}html{scroll-padding-top:70px}}
-@media(max-width:600px){.cells{grid-template-columns:repeat(2,minmax(0,1fr))}.voy{min-height:230px}.cal div{min-height:56px;padding:3px}.cal .e{display:none}.cal .dots{display:block}table{font-size:14px}th,td{padding:6px 4px}}
+.start{margin:22px 0}.start ol{padding-left:1.2em;margin:0 0 16px}.start li{margin-bottom:7px}
+.ex{background:var(--hlt);border-radius:12px;padding:14px 16px;font-variant-numeric:tabular-nums}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(14em,1fr));gap:10px 22px;margin:0}.terms dt{font-weight:600}.terms dd{margin:0;color:var(--mut);font-size:14px}
+.plate{margin:8px 0 26px}
+.voy{min-height:320px}
+.plate figcaption{font-size:14px;color:var(--mut);padding-top:10px;display:flex;flex-wrap:wrap;gap:6px 18px}
+.plate figcaption i{display:inline-block;width:18px;height:8px;border-radius:4px;vertical-align:middle;margin-right:6px}
+.lesson{display:grid;grid-template-columns:minmax(220px,290px) minmax(0,1fr);gap:28px;align-items:start}
+.lrail{position:sticky;top:80px;margin:0;background:var(--pan);border-radius:18px;padding:18px}
+.rail{list-style:none;padding:0;margin:0;display:grid;gap:4px}
+.rstep{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:center;width:100%;padding:9px 10px;border-radius:12px;color:var(--ink)}
+.rstep:hover{background:var(--paper)}
+.rstep.on{background:var(--paper);box-shadow:0 0 0 1px var(--line),0 1px 2px rgba(20,22,27,.06)}
+.rstep:focus-visible{outline:2px solid var(--sl)}
+.rn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:inline-flex;align-items:center;justify-content:center;font:600 14px "Instrument Sans",sans-serif;background:var(--paper)}
+.rstep.on .rn{border-color:var(--sl);color:var(--sl)}
+.rstep.ok .rn{background:var(--sl);border-color:var(--sl);color:var(--on)}
+.rstep b{display:block;font-weight:600}.rstep small{display:block;color:var(--mut);font-size:13px;line-height:1.35}
+.lbody{padding:30px}
+.lbody h2{margin-top:4px}
+.big3{padding-left:1.3em;font-size:18px}.big3 li{margin-bottom:12px;padding-left:4px}
+.big3 li::marker{font:400 22px "Instrument Serif",serif;color:var(--sl)}
+.lnav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:26px;padding-top:18px;border-top:1px solid var(--line);flex-wrap:wrap}
+.lq{border:0;padding:0;margin:0 0 18px}.lq legend{font-weight:600;margin-bottom:4px;padding:0}
+.hw{border-bottom:1px solid var(--line);padding:4px 0 16px;margin-bottom:14px}
+.ckrow{display:flex;gap:10px;align-items:center;font-weight:500;font-size:16px}
+.lcard{text-decoration:none;color:var(--ink);display:block}
+.lcard:hover{border-color:var(--rule)}
+@media(max-width:1000px){body{grid-template-columns:210px minmax(0,1fr)}.g2,.today{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:900px){.lesson{grid-template-columns:minmax(0,1fr)}.lrail{position:static}.rstep small{display:none}.rail{grid-template-columns:repeat(5,minmax(0,1fr))}.rstep{grid-template-columns:1fr;justify-items:center;text-align:center;padding:6px 2px}.rstep b{font-size:12px;font-weight:500}.lbody{padding:22px}}
+@media(max-width:700px){body{display:block}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px 14px;gap:10px;border-right:0;box-shadow:none;border-bottom:1px solid var(--line)}.brand svg{width:30px;height:30px}.brand small,.side hr,.sidefoot{display:none}nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:4px}nav a{font-size:13px;padding:7px 6px;min-height:38px;gap:7px}nav a svg{width:16px;height:16px}.top{padding:10px 16px}html{scroll-padding-top:70px}}
+@media(max-width:600px){.cells{grid-template-columns:repeat(2,minmax(0,1fr))}.voy{min-height:250px}.cal div{min-height:56px;padding:3px}.cal .e{display:none}.cal .dots{display:block}table{font-size:14px}th,td{padding:7px 5px}.pan,.today{padding:20px}}
 </style>
 </head>
 <body>
 <aside class="side">
-<a class="brand" href="#home"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="28" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="30" cy="30" r="23.5" fill="none" stroke="currentColor" stroke-width=".7"/><g stroke="currentColor" stroke-width=".6"></g><path d="M30 8 L33 30 L30 52 L27 30Z" fill="currentColor" opacity=".85"/><path d="M8 30 L30 27 L52 30 L30 33Z" fill="currentColor" opacity=".45"/><circle cx="30" cy="30" r="2.2" fill="var(--paper)" stroke="currentColor" stroke-width=".8"/><text x="30" y="7.2" text-anchor="middle" font-size="5" fill="currentColor" style="stroke:none;font-family:'IM Fell English',serif">N</text></svg><span>Money Course Studio<small>An atlas of personal finance</small></span></a>
+<a class="brand" href="#home"><svg viewBox="0 0 36 36" aria-hidden="true"><rect x="1" y="1" width="34" height="34" rx="10" fill="var(--sl)"/><rect x="9" y="25.5" width="18" height="5" rx="2.5" fill="var(--hl)"/><path d="M10 25V11.5l8 9 8-9V25" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Margin Notes<small>Study notes for your money</small></span></a>
 <hr>
 <nav id="nav">
-<a href="#home">Home</a><a href="#learn">Learn</a><a href="#syllabus">Syllabus</a><a href="#calendar">Calendar</a><a href="#quizzes">Quizzes</a><a href="#sims">Simulators</a><a href="#dictionary">Dictionary</a><a href="#teacher">AI teacher</a><a href="#journal">Journal</a>
+<a href="#home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="#learn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20"/><path d="M9 8h7M9 12h5"/></svg>Learn</a><a href="#syllabus"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg>Syllabus</a><a href="#calendar"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Calendar</a><a href="#quizzes"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg>Quizzes</a><a href="#sims"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 20h17"/><path d="M5 16.5 10 11l3.5 3L20 6.5"/><path d="M15.5 6.5H20V11"/></svg>Simulators</a><a href="#dictionary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19 9 5l5 14M5.8 14h6.4"/><path d="M15.5 13.5a3 3 0 1 1 0 4.5V11"/></svg>Dictionary</a><a href="#teacher"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10H9l-5 4z"/><path d="M8.5 9.5h7M8.5 12.5h4"/></svg>AI teacher</a><a href="#journal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19.5 6 15 16.5 4.5a2 2 0 0 1 3 3L9 18z"/><path d="M14.5 6.5l3 3"/></svg>Journal</a>
 </nav>
 <div class="sidefoot" id="sidefoot"></div>
 </aside>
 <div class="wrap">
-<header class="top"><div class="crumb" id="crumb"></div><div class="ttl">Money Course Studio</div><div class="act"><a class="pill" id="cont" href="#week-1">Continue</a></div></header>
+<header class="top"><div class="crumb" id="crumb"></div><div class="ttl">Margin Notes</div><div class="act"><a class="pill" id="cont" href="#week-1">Continue</a></div></header>
 <main id="app"><h1>Loading your course</h1></main>
 </div>
 <div id="toast" role="status"></div>
@@ -378,12 +381,12 @@ V.home=()=>{const cw=curWeek(),w=W[cw],st=D(S.s),pre=today()<st,ev=events(),tk=i
  const qs=PH.map((_,p)=>qBest(p)).filter(x=>x!==null);
  return `<h1>${pre?"Your course starts "+fmtD(st):"Week "+(cw+1)+" of 24: "+esc(w.t)}</h1>
  <p class="lead">${pre?"Get ready: read the first five chapters of The Psychology of Money and set your start date below.":"Phase "+((cw>>2)+1)+", "+PH[cw>>2]+". Finish the lecture, reading and lab to stamp this week."}</p>
- <figure class="plate" style="margin-inline:0"><div class="fig voy"><svg id="voys" role="img" aria-label="Map of the six course phases with your position"></svg></div><figcaption>Chart of the voyage · Phase ${(cw>>2)+1} of 6, ${PH[cw>>2]}</figcaption></figure>
+ <figure class="plate" style="margin-inline:0"><div class="fig voy"><svg id="voys" role="img" aria-label="Course progress drawn as a compounding curve with your next lesson circled"></svg></div><figcaption><span><i style="background:var(--hl)"></i>Finished lessons</span><span><i style="background:var(--sl);width:8px"></i>Your next lesson, circled</span><span>Each dot is one of 24 lessons; the curve rises like money compounding.</span></figcaption></figure>
  ${store.mode==="firestore"&&!store.user?`<section class="note" style="margin:0 0 18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><span>Sign in to save your progress to your account and use it on any device.</span><button id="si">Sign in with Google</button></section>`:""}
  ${ad===0?`<section class="card start"><h2>Start here</h2><ol><li><b>Pick your start date</b> in Settings at the bottom of this page (the calendar follows it).</li><li><b>Open Learn</b>: each lesson walks you through concepts, readings, a short quiz, coaching from the AI teacher, and homework.</li><li><b>Tick each item</b> as you finish it. Ticks show up here, in the calendar and on your progress bar.</li><li><b>Stuck?</b> Ask the AI teacher, or look a word up in the Dictionary.</li></ol><a class="btn" href="#learn">Start learning</a></section>`:""}
  <section class="today"><div><h2>Today, ${fmtD(today())}</h2>${tod.length?tod.map(line).join(""):`<p class="muted">${pre?"Nothing due yet. Your first lecture is "+fmtD(st)+".":"Nothing scheduled today. Catch up or review flashcards."}</p>`}${late.length?`<h3 style="margin-top:18px;color:var(--red)">Catch up (${late.length})</h3>${late.map(e=>line(e).replace("<time>","<time title='"+fmtD(e[0])+"'>")).join("")}`:""}</div>
  <div><h2>Course progress</h2><div class="big">${Math.round(ad/an*100)}%</div>${bar(ad/an)}<p class="muted sm" style="margin-top:8px">${ad} of ${an} items done · ${doneN()}/24 weeks stamped</p><h3 style="margin-top:16px">Finished this week</h3>${fin.length?`<ul class="donelist">${fin.map(e=>`<li>✓ ${esc(e[2])}</li>`).join("")}</ul>`:"<p class='muted sm'>Nothing yet this week.</p>"}</div></section>
- <div class="path">${PH.map((ph,p)=>`<div class="ph"><h4>Phase ${p+1} · ${Math.round(phPct(p)*100)}%<br><span style="font-weight:500">${ph}</span></h4>${bar(phPct(p))}<div class="cells">${[0,1,2,3].map(k=>{const i=p*4+k,b=wbits(i);return `<a class="cell ${stamped(i)?"done":b?"part":""} ${i===cw&&!pre?"now":""}" href="#week-${i+1}" aria-label="Week ${i+1}: ${esc(W[i].t)}"><b>${i+1}${stamped(i)?" ✓":""}</b><span>${esc(W[i].t)}</span><em class="mini" style="--p:${Math.round(wPct(i)*100)}%"></em></a>`}).join("")}</div></div>`).join("")}</div>
+ <div class="path">${PH.map((ph,p)=>`<div class="ph"><h4>${p+1}. ${ph} <span>${Math.round(phPct(p)*100)}%</span></h4>${bar(phPct(p))}<div class="cells">${[0,1,2,3].map(k=>{const i=p*4+k,b=wbits(i);return `<a class="cell ${stamped(i)?"done":b?"part":""} ${i===cw&&!pre?"now":""}" href="#week-${i+1}" aria-label="Week ${i+1}: ${esc(W[i].t)}"><b>${i+1}${stamped(i)?" ✓":""}</b><span>${esc(W[i].t)}</span><em class="mini" style="--p:${Math.round(wPct(i)*100)}%"></em></a>`}).join("")}</div></div>`).join("")}</div>
  <div class="stats"><div class="stat"><b>${qs.length}/6</b><span class="muted sm">phase quizzes taken</span></div><div class="stat"><b>${qs.length?Math.round(qs.reduce((a,b)=>a+b,0)/qs.length*20)+"%":"–"}</b><span class="muted sm">quiz average (best tries)</span></div><div class="stat"><b>${S.j.length}</b><span class="muted sm">journal entries</span></div><div class="stat"><b>${S.r.length}</b><span class="muted sm">real-money lab entries</span></div></div>
  <div class="g2"><section class="pan"><h2>This week</h2><h3>${esc(w.t)}</h3><ul class="notes">${w.n.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p><b>Lab:</b> ${esc(w.lab)}</p><p><b>Real-money step:</b> ${esc(w.m)}</p><div class="row"><a class="btn" href="#learn-${cw+1}">Start lesson ${cw+1}</a><a class="btn ghost" href="#week-${cw+1}">Week overview</a><a class="btn ghost" href="#teacher">Ask the teacher</a></div></section>
  <section><h2>Coming up</h2>${up.map(e=>`<div class="ev"><time>${fmtD(e[0]).replace(",","")}</time><a href="#week-${e[3]+1}" style="color:inherit;text-decoration:none"><span class="dot k-${e[1]}"></span>${esc(e[2])}</a></div>`).join("")||"<p class='muted'>Course complete. Set a new start date to go again.</p>"}<p class="sm" style="margin-top:12px"><a href="#calendar">Full calendar</a></p></section></div>
@@ -451,25 +454,24 @@ function chart(el,series,opt={}){const draw=()=>{const Wd=el.clientWidth,H=el.cl
 
 /* ---------- voyage map ---------- */
 let voyRO=null;
-function drawVoyage(){const s=$("#voys");if(!s)return;if(voyRO)voyRO.disconnect();const draw=()=>{const W=s.clientWidth,H=s.clientHeight;if(!W)return;const sm=W<560,cw=curWeek(),cur=cw>>2,R=["I","II","III","IV","V","VI"];
- const P=PH.map((_,i)=>({x:W*(sm?.12+.76*i/5:.09+.82*i/5),y:H*(i%2?.62:.4)}));let h="";
- for(let k=1;k<8;k++)h+=`<line x1="${W*k/8}" x2="${W*k/8}" y1="0" y2="${H}" stroke="var(--rule)" stroke-opacity=".35" stroke-dasharray="2 5"/>`;
- for(let k=1;k<4;k++)h+=`<line x1="0" x2="${W}" y1="${H*k/4}" y2="${H*k/4}" stroke="var(--rule)" stroke-opacity=".35" stroke-dasharray="2 5"/>`;
- const r=rng(7);
- P.forEach((p,i)=>{const rx=sm?Math.max(17,W*.05):Math.max(26,W*.055),ry=Math.max(sm?18:22,H*.14),pts=[];for(let a=0;a<16;a++){const t=a/16*Math.PI*2,f=.72+r()*.5;pts.push([p.x+Math.cos(t)*rx*f,p.y+Math.sin(t)*ry*f])}
-  const d="M"+pts.map(q=>q[0].toFixed(1)+","+q[1].toFixed(1)).join("L")+"Z",full=phPct(i)>=1;
-  h+=`<path d="${d}" fill="none" stroke="var(--rule)" stroke-opacity=".45" stroke-width="7" stroke-linejoin="round"/><path d="${d}" fill="${i===cur?"color-mix(in srgb,var(--mus) 60%,var(--paper))":"var(--paper)"}" stroke="var(--ink)" stroke-width="1.2" stroke-linejoin="round"/>`;
-  for(let k=0;k<3;k++){const hx=p.x-rx*.35+k*rx*.35,hy=p.y-ry*.15+(k%2)*ry*.25;h+=`<path d="M${hx-6},${hy+4} l6,-8 l6,8" fill="none" stroke="var(--rule)" stroke-width="1"/>`}
-  if(full)h+=`<path d="M${p.x+rx*.5},${p.y-ry*.2} v-22" stroke="var(--ink)" stroke-width="1.2"/><path d="M${p.x+rx*.5},${p.y-ry*.2-22} l14,5 l-14,5Z" fill="var(--sl)"/>`;
-  const above=i%2===0,ly=above?p.y-ry*1.15-6:p.y+ry*1.15+18;
-  h+=`<text x="${p.x}" y="${ly}" text-anchor="middle" style="font:${sm?15:17}px 'IM Fell English',serif;fill:var(--ink)">${R[i]}</text>`;
-  if(!sm)h+=`<text x="${p.x}" y="${ly+(above?-18:18)}" text-anchor="middle" style="font:italic 14px 'EB Garamond',serif">${PH[i]}</text>`});
- let d=`M${P[0].x},${P[0].y}`;for(let i=1;i<P.length;i++){const a=P[i-1],b=P[i],mx=(a.x+b.x)/2;d+=` C${mx},${a.y} ${mx},${b.y} ${b.x},${b.y}`}
- h=h.replace(/^/,`<path d="${d}" fill="none" stroke="var(--ink)" stroke-width="1.3" stroke-dasharray="1 6" stroke-linecap="round"/>`);
- const sp=P[cur],bx=sm?sp.x:sp.x+(cur<5?Math.max(30,W*.07):-Math.max(30,W*.07)),by=sm?sp.y+(cur%2?-H*.3:H*.3):sp.y+(cur%2?-H*.2:H*.22);
- h+=`<g transform="translate(${bx},${by})"><path d="M-16,0 Q0,9 16,0 Z" fill="var(--ink)"/><path d="M0,-1 V-26" stroke="var(--ink)" stroke-width="1.2"/><path d="M1,-25 Q12,-14 1,-4 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/><path d="M-1,-22 Q-10,-13 -1,-5 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/><path d="M-22,6 q4,-3 8,0 q4,3 8,0" fill="none" stroke="var(--rule)" stroke-width="1"/></g>`;
- if(!sm){const cx=W-46,cy=46;h+=`<g transform="translate(${cx},${cy})" stroke="var(--ink)" stroke-width=".8"><circle r="26" fill="var(--paper)" fill-opacity=".6"/><circle r="21" fill="none"/><path d="M0,-24 L4,0 L0,24 L-4,0Z" fill="var(--ink)"/><path d="M-24,0 L0,-3 L24,0 L0,3Z" fill="var(--ink)" fill-opacity=".45"/><text y="-30" text-anchor="middle" style="font:12px 'IM Fell English',serif;fill:var(--ink);stroke:none">N</text></g>`;
-  h+=`<g transform="translate(24,${H-22})"><text style="font:italic 14px 'EB Garamond',serif">${doneN()} of 24 weeks charted</text></g>`}
+function drawVoyage(){const s=$("#voys");if(!s)return;if(voyRO)voyRO.disconnect();const draw=()=>{const Wd=s.clientWidth,H=s.clientHeight;if(!Wd)return;const sm=Wd<560;
+ const L=sm?18:34,Rr=sm?18:34,T=sm?40:44,B=sm?42:52,iw=Wd-L-Rr,ih=H-T-B,k=1.7,f=t=>(Math.exp(k*t)-1)/(Math.exp(k)-1);
+ const X=t=>L+iw*t,Y=t=>T+ih*(1-(.1+.9*f(t)));const pt=i=>{const t=i/23;return[X(t),Y(t)]};
+ const done=i=>lsReached(i)>=5||stamped(i),nd=W.filter((_,i)=>done(i)).length,nx=Math.max(0,W.findIndex((_,i)=>!done(i)));const SH=["Foundations","Markets","Portfolio","Behavior","Valuation","Mastery"];
+ let h=`<defs><pattern id="mnd" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.1" fill="var(--line)"/></pattern></defs><rect x="0" y="0" width="${Wd}" height="${H}" fill="url(#mnd)" rx="14"/>`;
+ for(let p=0;p<6;p++){const x0=X(p*4/23-(p?2/23/2:0)),x1=X(Math.min(1,(p*4+3)/23+(p<5?1/23/2:0)));if(p%2)h+=`<rect x="${x0}" y="${T-18}" width="${x1-x0}" height="${ih+18}" fill="var(--pan)" opacity=".7" rx="8"/>`;
+  h+=`<text x="${(x0+x1)/2}" y="${H-B+30}" text-anchor="middle" style="font-weight:600;fill:${p===(nx>>2)?"var(--ink)":"var(--mut)"}">${sm?p+1:(p+1)+" "+SH[p]}</text>`}
+ let d="";for(let j=0;j<=120;j++){const t=j/120;d+=(j?"L":"M")+X(t).toFixed(1)+","+Y(t).toFixed(1)}
+ if(nd){let hd="";const te=Math.max(.012,(nd-1)/23);for(let j=0;j<=60;j++){const t=te*j/60;hd+=(j?"L":"M")+X(t).toFixed(1)+","+Y(t).toFixed(1)}h+=`<path d="${hd}" fill="none" stroke="var(--hl)" stroke-width="16" stroke-linecap="round" opacity=".95"/>`}
+ h+=`<path d="${d}" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/>`;
+ h+=`<path d="${d}L${X(1)},${T+ih}L${X(0)},${T+ih}Z" fill="var(--soft)" opacity=".45"/>`;
+ for(let i=0;i<24;i++){const[x,y]=pt(i);h+=done(i)?`<circle cx="${x}" cy="${y}" r="${sm?3.6:4.4}" fill="var(--sl)" stroke="var(--paper)" stroke-width="2"/>`:`<circle cx="${x}" cy="${y}" r="${sm?3:3.6}" fill="var(--paper)" stroke="var(--rule)" stroke-width="1.6"/>`}
+ const[cx,cy]=pt(nx),rx=sm?13:16,ry=sm?11:13;h+=`<path d="M${cx-rx},${cy+1} C${cx-rx},${cy-ry-2} ${cx+rx+3},${cy-ry} ${cx+rx},${cy+2} S${cx-rx+4},${cy+ry+2} ${cx-rx+1},${cy-3} l4,-5" fill="none" stroke="var(--sl)" stroke-width="2.2" stroke-linecap="round"/>`;
+ const right=cx>Wd*.62,lx=right?cx-rx-10:cx+rx+10,ly=cy-ry-14;
+ h+=`<path d="M${right?cx-rx*.7:cx+rx*.7},${cy-ry*.7} Q${right?lx+6:lx-6},${ly+4} ${lx},${ly}" fill="none" stroke="var(--sl)" stroke-width="1.6" stroke-linecap="round"/>`;
+ h+=`<text x="${right?lx-4:lx+4}" y="${ly-6}" text-anchor="${right?"end":"start"}" style="font-weight:700;font-size:${sm?13:14}px;fill:var(--sl)">Next: lesson ${nx+1}</text>`;
+ if(!sm)h+=`<text x="${right?lx-4:lx+4}" y="${ly+12}" text-anchor="${right?"end":"start"}" style="fill:var(--ink)">${W.length?esc(W[nx].t):""}</text>`;
+ h+=`<text x="${L}" y="${T-22}" style="font-weight:600;fill:var(--ink)">${nd} of 24 lessons finished</text>`;
  s.innerHTML=h};draw();voyRO=new ResizeObserver(draw);voyRO.observe(s)}
 
 /* ---------- simulators ---------- */
@@ -599,7 +601,7 @@ function route(){const h=(location.hash||"#home").slice(1);let v=h,arg=null;cons
  {const cw=curWeek(),[ad,an]=allPct(),names={home:"Home",learn:"Learn",syllabus:"Syllabus",calendar:"Calendar",quizzes:"Quizzes",sims:"Simulators",dictionary:"Dictionary",teacher:"AI teacher",journal:"Journal"};
   $("#crumb").textContent=v==="learn"&&arg!=null?"Lesson "+(arg+1)+" of 24 · "+PH[arg>>2]:v==="week"?"Plate "+(arg+1)+" of 24 · "+PH[arg>>2]:names[v];
   const nx=W.findIndex((_,i)=>lsReached(i)<5);const tgt=nx<0?cw:nx;$("#cont").href="#learn-"+(tgt+1);$("#cont").textContent=nx<0?"Review lessons":"Continue lesson "+(tgt+1);
-  $("#sidefoot").innerHTML=`<b>${Math.round(ad/an*100)}%</b>of the course charted${bar(ad/an)}<span class="sm">${doneN()} of 24 weeks stamped</span>`}
+  $("#sidefoot").innerHTML=`<b>${Math.round(ad/an*100)}%</b>of the course done${bar(ad/an)}<span class="sm">${doneN()} of 24 weeks stamped</span>`}
  if(v==="sims")renderSim();if(v==="home")drawVoyage();if(v==="dictionary"&&dTab==="terms")$("#dt").innerHTML=dRows();if(v==="quizzes"&&!qz)$("#fc").innerHTML=fcHTML();if(v==="teacher"||v==="learn"){const c=$("#chat");if(c)c.scrollTop=c.scrollHeight}}
 window.addEventListener("hashchange",()=>{qz=null;route();window.scrollTo(0,0)});
 const app=$("#app");
