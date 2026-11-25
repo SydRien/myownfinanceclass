@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Margin Notes</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#fbfbf6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171715" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-title" content="Margin Notes">
+<meta name="application-name" content="Margin Notes">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
@@ -671,6 +678,7 @@ app.addEventListener("submit",e=>{e.preventDefault();const f=e.target;
   else{if(q>h[0]){toast("You don't own that many");return}p.c+=q*px;h[0]-=q;if(h[0])p.h[ptSym]=h;else delete p.h[ptSym]}
   p.c=Math.round(p.c*100)/100;p.l.push([p.d,ptSym,side==="Buy"?q:-q,px]);if(p.l.length>150)p.l.shift();persist();toast(side+" "+q+" "+ptSym);renderSim()}
 });
+if(window.FIREBASE_CONFIG&&"serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("/sw.js").catch(()=>{})}
 function tick(){const c=$("#clk");if(c){const d=new Date();c.textContent=d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})+"  "+d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",hour12:false})}}
 setInterval(tick,30000);
 route();initStorage();

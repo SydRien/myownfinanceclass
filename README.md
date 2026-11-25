@@ -4,6 +4,13 @@ A study site for a 24-week personal-finance and investing course: syllabus, lect
 
 Live (after the first deploy): https://myownfinanceclass.web.app
 
+## Install as a Mac app
+
+The site is an installable web app (manifest, icons, offline-capable service worker).
+
+- **Safari (macOS Sonoma 14 or later):** open https://myownfinanceclass.web.app, then **File → Add to Dock**. It appears in your Dock, Launchpad and Applications folder, opens in its own window, and updates itself whenever the site is updated.
+- **Chrome:** open the site, then the install icon at the right end of the address bar (or ⋮ → Cast, save and share → Install page as app).
+
 ## How it's built
 
 - `public/index.html` is the whole app, one file with no build step. All course content is built into the page.
