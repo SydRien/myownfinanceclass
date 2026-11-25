@@ -5,187 +5,190 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Margin Notes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-/* VOICE everyday study companion: calm, precise, a little personal, like a well-kept notebook
-   IDEA margin notes: clean white pages, blue-pen ink for you and your next step, yellow highlighter for what's done
-   PICTURE the course as a compounding curve on Home: each dot a lesson, finished ones highlighted, the next one circled in pen
-   COLOUR paper #ffffff, margin #f4f5f7, ink #1a1d24, graphite #5b6270, pen blue #2f43e0, highlighter #ffe566, red #e5484d; night #14161b
-   TYPE Instrument Serif (headings) + Instrument Sans (everything else)
-   LAYOUT sidebar index with a margin rule; slim top bar with the next step; content in one calm column of sections; phone: sidebar becomes a compact top index */
+/* VOICE quiet study notebook: plain, precise, unhurried
+   IDEA a typed index card / Cargo-style page: one monospace voice, hairline columns, notes kept in the margin
+   PICTURE the course as a compounding curve drawn in 1px ink, finished lessons inked in, the next one circled by hand
+   COLOUR off-white #fbfbf6, ink #262624, graphite #85857e, hairline #dcdcd3, wash #efefe7; night #171715
+   TYPE DM Mono throughout, sizes kept close; hierarchy from space and rules, not weight
+   LAYOUT unchanged: sidebar index, top bar, content column; panels become ruled sections, buttons become bordered or underlined text */
 :root{color-scheme:light dark;
- --bg:light-dark(#ffffff,#14161b);--paper:light-dark(#ffffff,#181b21);--card:var(--paper);--side:light-dark(#f4f5f7,#111318);--pan:light-dark(#f4f5f7,#1d2028);
- --ink:light-dark(#1a1d24,#eceef2);--mut:light-dark(#5b6270,#9aa1ae);--line:light-dark(#e3e5ea,#2a2e37);--rule:light-dark(#c9cdd6,#3a3f4a);
- --sl:light-dark(#2f43e0,#8c9bff);--lnk:var(--sl);--soft:light-dark(#e9ecff,#232a52);--hl:light-dark(#ffe566,#cdb43c);--hlt:light-dark(#fff3b0,#3b3416);
- --red:light-dark(#e5484d,#ff6b6e);--on:light-dark(#ffffff,#0f1220);--sea:var(--hlt);--mus:var(--hl);--lil:var(--sl);--lilink:var(--on);--ok:var(--sl)}
+ --bg:light-dark(#fbfbf6,#171715);--paper:var(--bg);--card:var(--bg);--side:var(--bg);--pan:light-dark(#f3f3ec,#1e1e1b);
+ --ink:light-dark(#262624,#e6e6df);--mut:light-dark(#85857e,#8f8f87);--line:light-dark(#dcdcd3,#34342f);--rule:light-dark(#c4c4ba,#4a4a43);
+ --sl:var(--ink);--lnk:var(--ink);--soft:light-dark(#efefe7,#24241f);--hl:light-dark(#dcd9c3,#46443a);--hlt:light-dark(#efefe7,#22221e);
+ --red:light-dark(#9c4a3b,#d0806f);--on:var(--bg);--sea:var(--hlt);--mus:var(--hl);--lil:var(--ink);--lilink:var(--bg);--ok:var(--ink)}
 :root[data-theme=light]{color-scheme:light}
 :root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
-html{scroll-padding-top:80px;height:100%}
-body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:16px/1.6 "Instrument Sans",system-ui,sans-serif;overflow-x:clip;display:grid;grid-template-columns:248px minmax(0,1fr);-webkit-font-smoothing:antialiased}
-a{color:var(--lnk);text-underline-offset:3px;text-decoration-thickness:1px}
-h1,h2,h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;letter-spacing:-.01em;line-height:1.08;margin:0 0 .45em;text-wrap:balance}
-h1{font-size:clamp(34px,4.4vw,52px)}
-h2{font-size:clamp(24px,2.6vw,30px)}
-h3{font-size:21px}
-p{margin:0 0 .85em}
-.side{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--side);border-right:1px solid var(--line);box-shadow:inset -3px 0 0 -1px var(--soft);padding:22px 14px;z-index:2;display:flex;flex-direction:column;gap:18px}
-.brand{display:flex;align-items:center;gap:11px;color:var(--ink);text-decoration:none;padding:0 6px}
-.brand svg{width:36px;height:36px;flex:none}
-.brand span{font:400 24px/1 "Instrument Serif",serif;letter-spacing:-.01em}
-.brand small{display:block;font:500 13px/1.3 "Instrument Sans",sans-serif;color:var(--mut);margin-top:4px;letter-spacing:0}
-.side hr{border:0;border-top:1px solid var(--line);margin:0 6px}
-nav{display:flex;flex-direction:column;gap:2px}
-nav a{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--mut);font-size:15px;font-weight:500;padding:9px 10px;border-radius:9px;min-height:40px}
-nav a svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-nav a:hover{background:var(--paper);color:var(--ink)}
-nav a.on{background:var(--paper);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
-nav a.on svg{stroke:var(--sl)}
-.sidefoot{margin-top:auto;font-size:14px;color:var(--mut);padding:0 6px}
-.sidefoot b{font:400 34px/1 "Instrument Serif",serif;color:var(--ink);display:block;margin-bottom:4px}
+html{scroll-padding-top:70px;height:100%}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:15px/1.5 "DM Mono",ui-monospace,Menlo,monospace;overflow-x:clip;display:grid;grid-template-columns:260px minmax(0,1fr);-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--mut)}
+h1,h2,h3{font-family:inherit;font-weight:400;letter-spacing:0;line-height:1.25;margin:0 0 .7em;text-wrap:balance}
+h1{font-size:clamp(20px,2.2vw,26px)}
+h2{font-size:17px}
+h3{font-size:15px;font-weight:500}
+p{margin:0 0 1em}
+.side{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--bg);border-right:1px solid var(--line);padding:20px 18px;z-index:2;display:flex;flex-direction:column;gap:22px}
+.brand{display:flex;align-items:flex-start;gap:12px;color:var(--ink);text-decoration:none}
+.brand svg{width:30px;height:38px;flex:none;margin-top:1px}
+.brand span{font-size:14px;line-height:1.3;text-transform:uppercase;letter-spacing:.02em}
+.brand u{text-decoration-thickness:1px;text-underline-offset:3px}
+.brand small{display:block;text-transform:none;letter-spacing:0;color:var(--mut);margin-top:6px;text-decoration:none;font-size:13px}
+.side hr{border:0;border-top:1px solid var(--line);margin:0}
+nav{display:flex;flex-direction:column;gap:0}
+nav a{display:block;color:var(--ink);text-decoration:none;padding:5px 0;font-size:14px}
+nav a svg{display:none}
+nav a:hover{color:var(--mut)}
+nav a.on{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.sidefoot{margin-top:auto;font-size:13px;color:var(--mut)}
+.sidefoot b{font-weight:400;font-size:22px;color:var(--ink);display:block;margin-bottom:2px}
+.sidefoot .clk{display:block;margin-top:14px;font-variant-numeric:tabular-nums}
 .wrap{position:relative;z-index:1;min-width:0}
-.top{position:sticky;top:0;z-index:3;display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:12px max(20px,3.2vw);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.top .crumb{color:var(--mut);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top{position:sticky;top:0;z-index:3;display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:14px max(20px,3vw);background:var(--bg);border-bottom:1px solid var(--line)}
+.top .crumb{color:var(--ink);font-size:14px;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .top .ttl{display:none}
-.pill{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:10px;background:var(--sl);color:var(--on);text-decoration:none;font:600 14px "Instrument Sans",sans-serif;white-space:nowrap}
-main{max-width:1180px;margin:0 auto;padding:clamp(24px,3.4vw,48px) max(20px,3.2vw) 80px}
-.lead{color:var(--mut);font-size:18px;max-width:64ch}
-.g2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px}
-.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(15em,1fr));gap:16px}
-.pan,.today{background:var(--pan);border-radius:18px;padding:26px}
-.card,.cal,.flash.back{background:var(--paper);border:1px solid var(--line);border-radius:14px}
-.card{padding:22px}
-.stat{background:var(--pan);border-radius:14px;padding:14px 16px}
+.pill{display:inline;background:none;color:var(--ink);font-size:14px;padding:0;min-height:0;border:0;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;white-space:nowrap}
+main{max-width:1180px;margin:0 auto;padding:clamp(22px,3vw,40px) max(20px,3vw) 80px}
+.lead{color:var(--mut);font-size:15px;max-width:68ch}
+.g2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:0 36px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(16em,1fr));gap:0 28px}
+.pan,.today{background:none;border-top:1px solid var(--line);padding:22px 0 8px;border-radius:0}
+.card{background:none;border:0;border-top:1px solid var(--line);border-radius:0;padding:18px 0}
+.cal,.flash.back{background:var(--bg);border:1px solid var(--line);border-radius:0}
+.stat{background:none;border-top:1px solid var(--line);border-radius:0;padding:12px 0}
 .muted{color:var(--mut)}
-.sm{font-size:14px}
-.tag{display:inline-block;font-size:13px;font-weight:600;padding:2px 10px;border-radius:99px;background:var(--soft);color:var(--sl);white-space:nowrap}
-.tag.r{background:var(--pan);color:var(--mut)}
-button,.btn{font:600 15px "Instrument Sans",sans-serif;min-height:44px;padding:0 18px;border-radius:10px;border:1px solid var(--sl);background:var(--sl);color:var(--on);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-button.ghost,.btn.ghost{background:var(--paper);color:var(--ink);border-color:var(--rule)}
-button:hover,.btn:hover{filter:brightness(1.06)}
-button.ghost:hover,.btn.ghost:hover{border-color:var(--ink);filter:none}
-button:disabled{opacity:.45;cursor:default;filter:none}
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--sl);outline-offset:2px}
-input,select,textarea{font:16px "Instrument Sans",sans-serif;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:10px 12px;min-height:44px;width:100%}
-textarea{min-height:100px;resize:vertical}
-label{display:block;font-size:14px;font-weight:600;margin-bottom:5px}
-.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px;margin-bottom:14px}
-.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.sm{font-size:13px}
+.tag{display:inline-block;font-size:12px;padding:1px 6px;border:1px solid var(--line);border-radius:0;background:none;color:var(--ink);white-space:nowrap}
+.tag.r{color:var(--mut)}
+button,.btn{font:400 14px "DM Mono",ui-monospace,monospace;min-height:40px;padding:0 14px;border-radius:0;border:1px solid var(--ink);background:var(--ink);color:var(--bg);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+button.ghost,.btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
+button:hover,.btn:hover{filter:none;opacity:.85}
+button.ghost:hover,.btn.ghost:hover{border-color:var(--ink);opacity:1}
+button:disabled{opacity:.35;cursor:default}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:1px solid var(--ink);outline-offset:3px}
+input,select,textarea{font:15px "DM Mono",ui-monospace,monospace;color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--rule);border-radius:0;padding:8px 0;min-height:40px;width:100%}
+textarea{border:1px solid var(--rule);padding:10px;min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--ink);outline:none}
+label{display:block;font-size:13px;font-weight:400;color:var(--mut);margin-bottom:2px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:14px 20px;margin-bottom:16px}
+.row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
 .scroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:15px}
-th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-size:13px;font-weight:600;color:var(--mut)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:9px 12px 9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;font-weight:400;color:var(--mut)}
 td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.path{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:22px 28px;margin:28px 0 34px}
-.ph h4{margin:0 0 8px;font:600 14px "Instrument Sans",sans-serif;color:var(--ink)}
-.ph h4 span{color:var(--mut);font-weight:500}
-.cells{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.cell{aspect-ratio:1/1.08;border-radius:12px;border:1px solid var(--line);background:var(--paper);display:flex;flex-direction:column;justify-content:space-between;padding:10px;text-decoration:none;color:var(--ink);position:relative;overflow:hidden}
-.cell b{font:400 24px/1 "Instrument Serif",serif}
-.cell span{font-size:12px;line-height:1.25;color:var(--mut)}
-.cell.part{background:linear-gradient(var(--paper),var(--paper)) padding-box,linear-gradient(135deg,var(--hl),var(--line)) border-box;border-color:transparent}
-.cell.done{background:var(--hlt);border-color:color-mix(in srgb,var(--hl) 70%,var(--line))}
+.path{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px 32px;margin:28px 0 34px}
+.ph h4{margin:0 0 8px;font:400 14px "DM Mono",monospace;color:var(--ink)}
+.ph h4 span{color:var(--mut)}
+.cells{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-left:1px solid var(--line);border-top:1px solid var(--line)}
+.cell{aspect-ratio:1/1.1;border-radius:0;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:none;display:flex;flex-direction:column;justify-content:space-between;padding:8px;text-decoration:none;color:var(--ink);position:relative;overflow:hidden}
+.cell b{font-weight:400;font-size:18px;line-height:1}
+.cell span{font-size:11px;line-height:1.3;color:var(--mut)}
+.cell.part{background:repeating-linear-gradient(135deg,transparent 0 5px,var(--line) 5px 6px)}
+.cell.done{background:var(--pan)}
 .cell.done span{color:var(--ink)}
-.cell.now{border:2px solid var(--sl);box-shadow:0 0 0 4px var(--soft)}
-.cell:hover{border-color:var(--rule)}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));gap:12px;margin-bottom:26px}
-.stat b{display:block;font:400 clamp(28px,3vw,36px)/1.05 "Instrument Serif",serif}
-.ev{display:grid;grid-template-columns:6em minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
-.ev time{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:middle}
-.k-lec{background:var(--sl)}.k-read{background:#e0b400}.k-lab{background:var(--ink)}.k-quiz{background:var(--red)}.k-jr{background:var(--rule)}.k-cls{background:color-mix(in srgb,var(--sl) 45%,var(--paper))}
-.checks label{display:flex;gap:10px;align-items:center;font-weight:500;font-size:16px;padding:7px 0;cursor:pointer}
-.checks input{width:20px;height:20px;min-height:0;accent-color:var(--sl)}
+.cell.now{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.cell:hover{background:var(--soft)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));gap:0 24px;margin-bottom:24px}
+.stat b{display:block;font-weight:400;font-size:clamp(22px,2.4vw,28px);line-height:1.15}
+.ev{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.ev time{font-weight:400;color:var(--mut);white-space:nowrap;font-variant-numeric:tabular-nums}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:8px;vertical-align:middle;border:1px solid var(--ink)}
+.k-lec{background:var(--ink)}.k-read{background:transparent}.k-lab{background:var(--mut);border-color:var(--mut)}.k-quiz{background:var(--red);border-color:var(--red)}.k-jr{background:transparent;border-style:dashed}.k-cls{background:var(--line)}
+.checks label{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--ink);padding:6px 0;cursor:pointer}
+.checks input,.ev .ck,.ckrow input{width:16px;height:16px;min-height:0;accent-color:var(--ink);cursor:pointer}
 ul.links{padding:0;list-style:none;margin:0}
-ul.links li{padding:10px 0;border-bottom:1px solid var(--line)}
+ul.links li{padding:9px 0;border-bottom:1px solid var(--line)}
 .notes li{margin-bottom:8px}
 .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:hidden}
-.cal div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:96px;padding:7px;font-size:13px}
+.cal div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:96px;padding:6px;font-size:12px}
 .cal div:nth-child(7n){border-right:0}
-.cal .hd{min-height:0;font-weight:600;color:var(--mut);background:var(--pan)}
-.cal .o{opacity:.4}
-.cal .t{background:var(--soft)}
-.cal button.day{all:unset;cursor:pointer;display:inline-block;font:600 14px "Instrument Sans",sans-serif;margin-bottom:4px;padding:1px 6px;border-radius:6px}
-.cal .t button.day{background:var(--sl);color:var(--on)}
+.cal .hd{min-height:0;color:var(--mut);background:none}
+.cal .o{opacity:.35}
+.cal .t{background:var(--pan)}
+.cal button.day{all:unset;cursor:pointer;display:inline-block;font:400 13px "DM Mono",monospace;margin-bottom:4px}
+.cal .t button.day{text-decoration:underline;text-underline-offset:3px}
 .cal .e{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.55}
-.opt{display:block;width:100%;text-align:left;background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:10px;margin:8px 0;font-weight:500;padding:11px 14px;height:auto}
-.opt:hover{border-color:var(--ink);filter:none}
-.opt.right{background:var(--hlt);border-color:color-mix(in srgb,var(--hl) 80%,var(--ink))}
-.opt.wrong{background:color-mix(in srgb,var(--red) 10%,var(--paper));border-color:var(--red)}
-.opt.sel{background:var(--soft);border-color:var(--sl)}
-.flash{min-height:240px;display:flex;align-items:center;justify-content:center;text-align:center;font:400 clamp(28px,3.4vw,40px)/1.1 "Instrument Serif",serif;cursor:pointer;padding:28px;border-radius:14px;background:var(--hlt);border:0;color:var(--ink);width:100%;height:auto}
-.flash.back{font:500 18px/1.55 "Instrument Sans",sans-serif;background:var(--paper)}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;padding:4px;background:var(--pan);border-radius:12px;width:fit-content;max-width:100%}
-.tabs button{background:transparent;color:var(--mut);border:0;min-height:38px;border-radius:9px;font-weight:600}
-.tabs button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(20,22,27,.08),0 0 0 1px var(--line)}
-.fig{position:relative;min-height:320px;background:var(--paper);border:1px solid var(--line);border-radius:14px}
+.opt{display:block;width:100%;text-align:left;background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:0;margin:6px 0;font-weight:400;padding:10px 12px;height:auto}
+.opt:hover{border-color:var(--ink);opacity:1}
+.opt.right{background:var(--pan);border-color:var(--ink)}
+.opt.wrong{border-color:var(--red);color:var(--red)}
+.opt.sel{border-color:var(--ink);box-shadow:inset 3px 0 0 var(--ink)}
+.flash{min-height:220px;display:flex;align-items:center;justify-content:center;text-align:center;font:400 clamp(20px,2.4vw,26px)/1.3 "DM Mono",monospace;cursor:pointer;padding:28px;border-radius:0;background:var(--pan);border:1px solid var(--line);color:var(--ink);width:100%;height:auto}
+.flash.back{font-size:15px;line-height:1.55}
+.tabs{display:flex;gap:4px 18px;flex-wrap:wrap;margin-bottom:20px;padding:0 0 8px;border-bottom:1px solid var(--line);background:none;border-radius:0;width:auto}
+.tabs button{background:none;color:var(--mut);border:0;min-height:30px;padding:0;border-radius:0;font-weight:400}
+.tabs button.on{color:var(--ink);background:none;box-shadow:none;text-decoration:underline;text-underline-offset:4px}
+.fig{position:relative;min-height:320px;background:var(--bg);border:1px solid var(--line);border-radius:0}
 .fig>svg{position:absolute;inset:0;width:100%;height:100%}
-svg text{font:500 13px "Instrument Sans",sans-serif;fill:var(--mut);paint-order:stroke;stroke:var(--paper);stroke-width:4px}
-.big{font:400 clamp(32px,4vw,46px)/1.02 "Instrument Serif",serif}
+svg text{font:400 12px "DM Mono",ui-monospace,monospace;fill:var(--mut);paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+.big{font-weight:400;font-size:clamp(24px,2.8vw,32px);line-height:1.1}
 .res{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5em,1fr));gap:14px 18px;margin:14px 0}
-.res .big{font-size:clamp(26px,2.5vw,34px)}
-.chat{display:flex;flex-direction:column;gap:12px;min-height:320px;max-height:60vh;overflow-y:auto;padding:4px 2px 12px}
-.msg{max-width:72ch;padding:12px 16px;border-radius:14px;white-space:pre-wrap}
-.msg.u{align-self:flex-end;background:var(--sl);color:var(--on);border-bottom-right-radius:4px}
-.msg.a{align-self:flex-start;background:var(--pan);border-bottom-left-radius:4px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-.chips button{background:var(--paper);color:var(--ink);border-color:var(--rule);font-weight:500;font-size:14px;min-height:38px;border-radius:99px}
-.note{border-left:3px solid var(--hl);padding:10px 14px;background:var(--hlt);border-radius:0 10px 10px 0;font-size:15px}
+.res .big{font-size:clamp(20px,2.2vw,26px)}
+.chat{display:flex;flex-direction:column;gap:0;min-height:320px;max-height:60vh;overflow-y:auto;padding:0 0 12px;border-top:1px solid var(--line)}
+.msg{max-width:72ch;padding:12px 0;border-radius:0;white-space:pre-wrap;border-bottom:1px solid var(--line);width:100%}
+.msg.u{align-self:stretch;background:none;color:var(--mut)}
+.msg.u::before{content:"You: ";color:var(--ink)}
+.msg.a{align-self:stretch;background:none}
+.msg.a::before{content:"Teacher: ";color:var(--mut)}
+.chips{display:flex;flex-wrap:wrap;gap:6px 16px;margin:12px 0}
+.chips button{background:none;color:var(--ink);border:0;padding:0;min-height:28px;font-size:13px;text-decoration:underline;text-underline-offset:3px;border-radius:0}
+.note{border:1px solid var(--line);padding:10px 12px;background:var(--pan);border-radius:0;font-size:14px}
 .hide{display:none!important}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;font-size:14px;font-weight:500;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:0;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
 #toast.on{opacity:1}
 @media(prefers-reduced-motion:reduce){#toast{transition:none}}
 .cal .dots{display:none}
-.pbar{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin:6px 0}
-.pbar i{display:block;height:100%;background:var(--sl);border-radius:99px}
-.ph .pbar{height:4px;margin:0 0 10px}
-.today{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:32px;margin:22px 0 8px}
-.ev.c{grid-template-columns:30px minmax(0,1fr);align-items:center}
-.ev .ck{width:20px;height:20px;min-height:0;accent-color:var(--sl);cursor:pointer}
-.tick{display:inline-flex;width:20px;height:20px;border:1.5px solid var(--rule);border-radius:6px;align-items:center;justify-content:center;font-size:13px;color:var(--on);font-weight:700}
-.tick.on{background:var(--sl);border-color:var(--sl)}
-.strike{text-decoration:line-through;text-decoration-color:var(--mut);opacity:.6}
+.pbar{height:3px;border-radius:0;background:var(--line);overflow:hidden;margin:6px 0}
+.pbar i{display:block;height:100%;background:var(--ink);border-radius:0}
+.ph .pbar{height:2px;margin:0 0 10px}
+.today{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:0 36px;margin:22px 0 8px}
+.ev.c{grid-template-columns:28px minmax(0,1fr);align-items:center}
+.tick{display:inline-flex;width:16px;height:16px;border:1px solid var(--rule);border-radius:0;align-items:center;justify-content:center;font-size:11px;color:var(--bg)}
+.tick.on{background:var(--ink);border-color:var(--ink)}
+.strike{text-decoration:line-through;text-decoration-color:var(--mut);opacity:.55}
 .donelist{list-style:none;padding:0;margin:0}.donelist li{padding:3px 0}
-.donelist li::first-letter{color:var(--sl)}
-.mini{position:absolute;left:0;bottom:0;height:3px;width:var(--p);background:var(--sl)}
+.mini{position:absolute;left:0;bottom:0;height:2px;width:var(--p);background:var(--ink)}
 .cell.done .mini{display:none}
-.start{margin:22px 0}.start ol{padding-left:1.2em;margin:0 0 16px}.start li{margin-bottom:7px}
-.ex{background:var(--hlt);border-radius:12px;padding:14px 16px;font-variant-numeric:tabular-nums}
-.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(14em,1fr));gap:10px 22px;margin:0}.terms dt{font-weight:600}.terms dd{margin:0;color:var(--mut);font-size:14px}
-.plate{margin:8px 0 26px}
+.start{margin:22px 0}.start ol{padding-left:2.2em;margin:0 0 16px}.start li{margin-bottom:7px}
+.ex{background:var(--pan);border-left:1px solid var(--ink);border-radius:0;padding:12px 14px;font-variant-numeric:tabular-nums}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(15em,1fr));gap:10px 24px;margin:0}.terms dt{font-weight:500}.terms dd{margin:0;color:var(--mut);font-size:13px}
+.plate{margin:8px 0 28px}
 .voy{min-height:320px}
-.plate figcaption{font-size:14px;color:var(--mut);padding-top:10px;display:flex;flex-wrap:wrap;gap:6px 18px}
-.plate figcaption i{display:inline-block;width:18px;height:8px;border-radius:4px;vertical-align:middle;margin-right:6px}
-.lesson{display:grid;grid-template-columns:minmax(220px,290px) minmax(0,1fr);gap:28px;align-items:start}
-.lrail{position:sticky;top:80px;margin:0;background:var(--pan);border-radius:18px;padding:18px}
-.rail{list-style:none;padding:0;margin:0;display:grid;gap:4px}
-.rstep{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:center;width:100%;padding:9px 10px;border-radius:12px;color:var(--ink)}
-.rstep:hover{background:var(--paper)}
-.rstep.on{background:var(--paper);box-shadow:0 0 0 1px var(--line),0 1px 2px rgba(20,22,27,.06)}
-.rstep:focus-visible{outline:2px solid var(--sl)}
-.rn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:inline-flex;align-items:center;justify-content:center;font:600 14px "Instrument Sans",sans-serif;background:var(--paper)}
-.rstep.on .rn{border-color:var(--sl);color:var(--sl)}
-.rstep.ok .rn{background:var(--sl);border-color:var(--sl);color:var(--on)}
-.rstep b{display:block;font-weight:600}.rstep small{display:block;color:var(--mut);font-size:13px;line-height:1.35}
-.lbody{padding:30px}
+.plate figcaption{font-size:13px;color:var(--mut);padding-top:10px;display:flex;flex-wrap:wrap;gap:6px 22px}
+.plate figcaption i{display:inline-block;width:16px;height:6px;vertical-align:middle;margin-right:6px}
+.lesson{display:grid;grid-template-columns:minmax(220px,280px) minmax(0,1fr);gap:0;align-items:start;border-top:1px solid var(--line)}
+.lrail{position:sticky;top:64px;margin:0;background:none;border-radius:0;padding:18px 22px 18px 0;border-right:1px solid var(--line);align-self:stretch}
+.rail{list-style:none;padding:0;margin:0;display:grid;gap:0}
+.rstep{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;align-items:start;width:100%;padding:10px 0;border-bottom:1px solid var(--line);color:var(--ink)}
+.rstep:hover b{text-decoration:underline;text-underline-offset:3px}
+.rstep.on b{text-decoration:underline;text-underline-offset:3px}
+.rstep:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
+.rn{width:20px;height:20px;border:1px solid var(--rule);display:inline-flex;align-items:center;justify-content:center;font-size:11px;background:none}
+.rstep.on .rn{border-color:var(--ink)}
+.rstep.ok .rn{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.rstep b{display:block;font-weight:400}.rstep small{display:block;color:var(--mut);font-size:12px;line-height:1.4;margin-top:2px}
+.lbody{padding:18px 0 18px 28px;border:0}
 .lbody h2{margin-top:4px}
-.big3{padding-left:1.3em;font-size:18px}.big3 li{margin-bottom:12px;padding-left:4px}
-.big3 li::marker{font:400 22px "Instrument Serif",serif;color:var(--sl)}
-.lnav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:26px;padding-top:18px;border-top:1px solid var(--line);flex-wrap:wrap}
-.lq{border:0;padding:0;margin:0 0 18px}.lq legend{font-weight:600;margin-bottom:4px;padding:0}
+.big3{padding-left:2.2em;font-size:15px}.big3 li{margin-bottom:12px}
+.big3 li::marker{color:var(--mut)}
+.lnav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:24px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap}
+.lq{border:0;padding:0;margin:0 0 18px}.lq legend{font-weight:500;margin-bottom:4px;padding:0}
 .hw{border-bottom:1px solid var(--line);padding:4px 0 16px;margin-bottom:14px}
-.ckrow{display:flex;gap:10px;align-items:center;font-weight:500;font-size:16px}
+.ckrow{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--ink)}
 .lcard{text-decoration:none;color:var(--ink);display:block}
-.lcard:hover{border-color:var(--rule)}
-@media(max-width:1000px){body{grid-template-columns:210px minmax(0,1fr)}.g2,.today{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:900px){.lesson{grid-template-columns:minmax(0,1fr)}.lrail{position:static}.rstep small{display:none}.rail{grid-template-columns:repeat(5,minmax(0,1fr))}.rstep{grid-template-columns:1fr;justify-items:center;text-align:center;padding:6px 2px}.rstep b{font-size:12px;font-weight:500}.lbody{padding:22px}}
-@media(max-width:700px){body{display:block}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px 14px;gap:10px;border-right:0;box-shadow:none;border-bottom:1px solid var(--line)}.brand svg{width:30px;height:30px}.brand small,.side hr,.sidefoot{display:none}nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:4px}nav a{font-size:13px;padding:7px 6px;min-height:38px;gap:7px}nav a svg{width:16px;height:16px}.top{padding:10px 16px}html{scroll-padding-top:70px}}
-@media(max-width:600px){.cells{grid-template-columns:repeat(2,minmax(0,1fr))}.voy{min-height:250px}.cal div{min-height:56px;padding:3px}.cal .e{display:none}.cal .dots{display:block}table{font-size:14px}th,td{padding:7px 5px}.pan,.today{padding:20px}}
+.lcard:hover h3{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:1000px){body{grid-template-columns:220px minmax(0,1fr)}.g2,.today{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:900px){.lesson{grid-template-columns:minmax(0,1fr)}.lrail{position:static;border-right:0;padding-right:0;border-bottom:1px solid var(--line)}.rstep small{display:none}.rail{grid-template-columns:repeat(5,minmax(0,1fr))}.rstep{grid-template-columns:1fr;justify-items:center;text-align:center;padding:6px 2px;border-bottom:0}.rstep b{font-size:11px}.lbody{padding:18px 0}}
+@media(max-width:700px){body{display:block}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px 16px;gap:10px;border-right:0;border-bottom:1px solid var(--line)}.brand svg{width:22px;height:28px}.brand small,.side hr,.sidefoot{display:none}nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:0 10px}nav a{font-size:13px;padding:5px 0}.top{padding:10px 16px}html{scroll-padding-top:60px}}
+@media(max-width:600px){.cells{grid-template-columns:repeat(2,minmax(0,1fr))}.voy{min-height:250px}.cal div{min-height:52px;padding:3px}.cal .e{display:none}.cal .dots{display:block}table{font-size:13px}}
 </style>
 </head>
 <body>
 <aside class="side">
-<a class="brand" href="#home"><svg viewBox="0 0 36 36" aria-hidden="true"><rect x="1" y="1" width="34" height="34" rx="10" fill="var(--sl)"/><rect x="9" y="25.5" width="18" height="5" rx="2.5" fill="var(--hl)"/><path d="M10 25V11.5l8 9 8-9V25" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Margin Notes<small>Study notes for your money</small></span></a>
+<a class="brand" href="#home"><svg viewBox="0 0 30 38" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="0.6" y="0.6" width="28.8" height="36.8"/><path d="M9 0.6v36.8"/><path d="M13 9h12M13 14h12M13 19h9M13 24h12M13 29h6" stroke-width="1"/><path d="M3 8.5h3M3 18.5h3" stroke-width="1"/></svg><span><u>Margin Notes</u><small>Study notes for your money</small></span></a>
 <hr>
 <nav id="nav">
 <a href="#home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="#learn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20"/><path d="M9 8h7M9 12h5"/></svg>Learn</a><a href="#syllabus"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg>Syllabus</a><a href="#calendar"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Calendar</a><a href="#quizzes"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="m8 12.5 2.8 2.8L16.5 9"/></svg>Quizzes</a><a href="#sims"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 20h17"/><path d="M5 16.5 10 11l3.5 3L20 6.5"/><path d="M15.5 6.5H20V11"/></svg>Simulators</a><a href="#dictionary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19 9 5l5 14M5.8 14h6.4"/><path d="M15.5 13.5a3 3 0 1 1 0 4.5V11"/></svg>Dictionary</a><a href="#teacher"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10H9l-5 4z"/><path d="M8.5 9.5h7M8.5 12.5h4"/></svg>AI teacher</a><a href="#journal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19.5 6 15 16.5 4.5a2 2 0 0 1 3 3L9 18z"/><path d="M14.5 6.5l3 3"/></svg>Journal</a>
@@ -381,7 +384,7 @@ V.home=()=>{const cw=curWeek(),w=W[cw],st=D(S.s),pre=today()<st,ev=events(),tk=i
  const qs=PH.map((_,p)=>qBest(p)).filter(x=>x!==null);
  return `<h1>${pre?"Your course starts "+fmtD(st):"Week "+(cw+1)+" of 24: "+esc(w.t)}</h1>
  <p class="lead">${pre?"Get ready: read the first five chapters of The Psychology of Money and set your start date below.":"Phase "+((cw>>2)+1)+", "+PH[cw>>2]+". Finish the lecture, reading and lab to stamp this week."}</p>
- <figure class="plate" style="margin-inline:0"><div class="fig voy"><svg id="voys" role="img" aria-label="Course progress drawn as a compounding curve with your next lesson circled"></svg></div><figcaption><span><i style="background:var(--hl)"></i>Finished lessons</span><span><i style="background:var(--sl);width:8px"></i>Your next lesson, circled</span><span>Each dot is one of 24 lessons; the curve rises like money compounding.</span></figcaption></figure>
+ <figure class="plate" style="margin-inline:0"><div class="fig voy"><svg id="voys" role="img" aria-label="Course progress drawn as a compounding curve with your next lesson circled"></svg></div><figcaption><span><i style="background:var(--hl)"></i>Finished lessons</span><span><i style="background:var(--ink);width:7px;height:7px;border-radius:50%"></i>Inked dots are done; the circled one is next</span><span>Each dot is one of 24 lessons; the curve rises like money compounding.</span></figcaption></figure>
  ${store.mode==="firestore"&&!store.user?`<section class="note" style="margin:0 0 18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><span>Sign in to save your progress to your account and use it on any device.</span><button id="si">Sign in with Google</button></section>`:""}
  ${ad===0?`<section class="card start"><h2>Start here</h2><ol><li><b>Pick your start date</b> in Settings at the bottom of this page (the calendar follows it).</li><li><b>Open Learn</b>: each lesson walks you through concepts, readings, a short quiz, coaching from the AI teacher, and homework.</li><li><b>Tick each item</b> as you finish it. Ticks show up here, in the calendar and on your progress bar.</li><li><b>Stuck?</b> Ask the AI teacher, or look a word up in the Dictionary.</li></ol><a class="btn" href="#learn">Start learning</a></section>`:""}
  <section class="today"><div><h2>Today, ${fmtD(today())}</h2>${tod.length?tod.map(line).join(""):`<p class="muted">${pre?"Nothing due yet. Your first lecture is "+fmtD(st)+".":"Nothing scheduled today. Catch up or review flashcards."}</p>`}${late.length?`<h3 style="margin-top:18px;color:var(--red)">Catch up (${late.length})</h3>${late.map(e=>line(e).replace("<time>","<time title='"+fmtD(e[0])+"'>")).join("")}`:""}</div>
@@ -458,20 +461,20 @@ function drawVoyage(){const s=$("#voys");if(!s)return;if(voyRO)voyRO.disconnect(
  const L=sm?18:34,Rr=sm?18:34,T=sm?40:44,B=sm?42:52,iw=Wd-L-Rr,ih=H-T-B,k=1.7,f=t=>(Math.exp(k*t)-1)/(Math.exp(k)-1);
  const X=t=>L+iw*t,Y=t=>T+ih*(1-(.1+.9*f(t)));const pt=i=>{const t=i/23;return[X(t),Y(t)]};
  const done=i=>lsReached(i)>=5||stamped(i),nd=W.filter((_,i)=>done(i)).length,nx=Math.max(0,W.findIndex((_,i)=>!done(i)));const SH=["Foundations","Markets","Portfolio","Behavior","Valuation","Mastery"];
- let h=`<defs><pattern id="mnd" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.1" fill="var(--line)"/></pattern></defs><rect x="0" y="0" width="${Wd}" height="${H}" fill="url(#mnd)" rx="14"/>`;
- for(let p=0;p<6;p++){const x0=X(p*4/23-(p?2/23/2:0)),x1=X(Math.min(1,(p*4+3)/23+(p<5?1/23/2:0)));if(p%2)h+=`<rect x="${x0}" y="${T-18}" width="${x1-x0}" height="${ih+18}" fill="var(--pan)" opacity=".7" rx="8"/>`;
-  h+=`<text x="${(x0+x1)/2}" y="${H-B+30}" text-anchor="middle" style="font-weight:600;fill:${p===(nx>>2)?"var(--ink)":"var(--mut)"}">${sm?p+1:(p+1)+" "+SH[p]}</text>`}
+ let h=`<defs><pattern id="mnd" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.1" fill="var(--line)"/></pattern></defs>`;
+ for(let p=0;p<6;p++){const x0=X(p*4/23-(p?2/23/2:0)),x1=X(Math.min(1,(p*4+3)/23+(p<5?1/23/2:0)));if(p)h+=`<line x1="${x0}" x2="${x0}" y1="${T-18}" y2="${T+ih}" stroke="var(--line)" stroke-dasharray="2 4"/>`;
+  h+=`<text x="${(x0+x1)/2}" y="${H-B+30}" text-anchor="middle" style="fill:${p===(nx>>2)?"var(--ink)":"var(--mut)"}">${sm?p+1:(p+1)+" "+SH[p]}</text>`}
  let d="";for(let j=0;j<=120;j++){const t=j/120;d+=(j?"L":"M")+X(t).toFixed(1)+","+Y(t).toFixed(1)}
- if(nd){let hd="";const te=Math.max(.012,(nd-1)/23);for(let j=0;j<=60;j++){const t=te*j/60;hd+=(j?"L":"M")+X(t).toFixed(1)+","+Y(t).toFixed(1)}h+=`<path d="${hd}" fill="none" stroke="var(--hl)" stroke-width="16" stroke-linecap="round" opacity=".95"/>`}
- h+=`<path d="${d}" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/>`;
- h+=`<path d="${d}L${X(1)},${T+ih}L${X(0)},${T+ih}Z" fill="var(--soft)" opacity=".45"/>`;
- for(let i=0;i<24;i++){const[x,y]=pt(i);h+=done(i)?`<circle cx="${x}" cy="${y}" r="${sm?3.6:4.4}" fill="var(--sl)" stroke="var(--paper)" stroke-width="2"/>`:`<circle cx="${x}" cy="${y}" r="${sm?3:3.6}" fill="var(--paper)" stroke="var(--rule)" stroke-width="1.6"/>`}
- const[cx,cy]=pt(nx),rx=sm?13:16,ry=sm?11:13;h+=`<path d="M${cx-rx},${cy+1} C${cx-rx},${cy-ry-2} ${cx+rx+3},${cy-ry} ${cx+rx},${cy+2} S${cx-rx+4},${cy+ry+2} ${cx-rx+1},${cy-3} l4,-5" fill="none" stroke="var(--sl)" stroke-width="2.2" stroke-linecap="round"/>`;
+ if(nd){let hd="";const te=Math.max(.012,(nd-1)/23);for(let j=0;j<=60;j++){const t=te*j/60;hd+=(j?"L":"M")+X(t).toFixed(1)+","+Y(t).toFixed(1)}h+=`<path d="${hd}" fill="none" stroke="var(--hl)" stroke-width="12" stroke-linecap="butt"/>`}
+ h+=`<path d="${d}" fill="none" stroke="var(--ink)" stroke-width="1.2"/>`;
+ h+=`<line x1="${X(0)}" x2="${X(1)}" y1="${T+ih}" y2="${T+ih}" stroke="var(--rule)"/>`;
+ for(let i=0;i<24;i++){const[x,y]=pt(i);h+=done(i)?`<circle cx="${x}" cy="${y}" r="${sm?3.6:4.4}" fill="var(--ink)"/>`:`<circle cx="${x}" cy="${y}" r="${sm?3:3.6}" fill="var(--bg)" stroke="var(--mut)" stroke-width="1"/>`}
+ const[cx,cy]=pt(nx),rx=sm?13:16,ry=sm?11:13;h+=`<path d="M${cx-rx},${cy+1} C${cx-rx},${cy-ry-2} ${cx+rx+3},${cy-ry} ${cx+rx},${cy+2} S${cx-rx+4},${cy+ry+2} ${cx-rx+1},${cy-3} l4,-5" fill="none" stroke="var(--ink)" stroke-width="1.2" stroke-linecap="round"/>`;
  const right=cx>Wd*.62,lx=right?cx-rx-10:cx+rx+10,ly=cy-ry-14;
- h+=`<path d="M${right?cx-rx*.7:cx+rx*.7},${cy-ry*.7} Q${right?lx+6:lx-6},${ly+4} ${lx},${ly}" fill="none" stroke="var(--sl)" stroke-width="1.6" stroke-linecap="round"/>`;
- h+=`<text x="${right?lx-4:lx+4}" y="${ly-6}" text-anchor="${right?"end":"start"}" style="font-weight:700;font-size:${sm?13:14}px;fill:var(--sl)">Next: lesson ${nx+1}</text>`;
+ h+=`<path d="M${right?cx-rx*.7:cx+rx*.7},${cy-ry*.7} Q${right?lx+6:lx-6},${ly+4} ${lx},${ly}" fill="none" stroke="var(--ink)" stroke-width="1" stroke-linecap="round"/>`;
+ h+=`<text x="${right?lx-4:lx+4}" y="${ly-6}" text-anchor="${right?"end":"start"}" style="font-size:${sm?12:13}px;fill:var(--ink)">Next: lesson ${nx+1}</text>`;
  if(!sm)h+=`<text x="${right?lx-4:lx+4}" y="${ly+12}" text-anchor="${right?"end":"start"}" style="fill:var(--ink)">${W.length?esc(W[nx].t):""}</text>`;
- h+=`<text x="${L}" y="${T-22}" style="font-weight:600;fill:var(--ink)">${nd} of 24 lessons finished</text>`;
+ h+=`<text x="${L}" y="${T-22}" style="fill:var(--ink)">${nd} of 24 lessons finished</text>`;
  s.innerHTML=h};draw();voyRO=new ResizeObserver(draw);voyRO.observe(s)}
 
 /* ---------- simulators ---------- */
@@ -601,7 +604,7 @@ function route(){const h=(location.hash||"#home").slice(1);let v=h,arg=null;cons
  {const cw=curWeek(),[ad,an]=allPct(),names={home:"Home",learn:"Learn",syllabus:"Syllabus",calendar:"Calendar",quizzes:"Quizzes",sims:"Simulators",dictionary:"Dictionary",teacher:"AI teacher",journal:"Journal"};
   $("#crumb").textContent=v==="learn"&&arg!=null?"Lesson "+(arg+1)+" of 24 · "+PH[arg>>2]:v==="week"?"Plate "+(arg+1)+" of 24 · "+PH[arg>>2]:names[v];
   const nx=W.findIndex((_,i)=>lsReached(i)<5);const tgt=nx<0?cw:nx;$("#cont").href="#learn-"+(tgt+1);$("#cont").textContent=nx<0?"Review lessons":"Continue lesson "+(tgt+1);
-  $("#sidefoot").innerHTML=`<b>${Math.round(ad/an*100)}%</b>of the course done${bar(ad/an)}<span class="sm">${doneN()} of 24 weeks stamped</span>`}
+  $("#sidefoot").innerHTML=`<b>${Math.round(ad/an*100)}%</b>of the course done${bar(ad/an)}<span class="sm">${doneN()} of 24 weeks stamped</span><span class="clk" id="clk"></span>`;tick()}
  if(v==="sims")renderSim();if(v==="home")drawVoyage();if(v==="dictionary"&&dTab==="terms")$("#dt").innerHTML=dRows();if(v==="quizzes"&&!qz)$("#fc").innerHTML=fcHTML();if(v==="teacher"||v==="learn"){const c=$("#chat");if(c)c.scrollTop=c.scrollHeight}}
 window.addEventListener("hashchange",()=>{qz=null;route();window.scrollTo(0,0)});
 const app=$("#app");
@@ -668,6 +671,8 @@ app.addEventListener("submit",e=>{e.preventDefault();const f=e.target;
   else{if(q>h[0]){toast("You don't own that many");return}p.c+=q*px;h[0]-=q;if(h[0])p.h[ptSym]=h;else delete p.h[ptSym]}
   p.c=Math.round(p.c*100)/100;p.l.push([p.d,ptSym,side==="Buy"?q:-q,px]);if(p.l.length>150)p.l.shift();persist();toast(side+" "+q+" "+ptSym);renderSim()}
 });
+function tick(){const c=$("#clk");if(c){const d=new Date();c.textContent=d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})+"  "+d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",hour12:false})}}
+setInterval(tick,30000);
 route();initStorage();
 }
 </script>
